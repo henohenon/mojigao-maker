@@ -157,7 +157,7 @@ JikkouButton.onclick = () => {
 }
 function pushKaoBack(context) {
   var image = new Image();
-  crossOrigin="anonymous";
+  image.crossOrigin="anonymous";
   image.src = "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/%E6%AC%A1%E3%81%9F%E3%82%99.png";
   return image;
 }
@@ -175,7 +175,7 @@ function MakeMojiImage(moji) {
   let context = canvas.getContext('2d');//キャンパスを所得してる(？)
   DrowText(moji);//文字をテキストとしてキャンバスに描画
   var image = new Image();
-  crossOrigin="anonymous";
+  image.crossOrigin="anonymous";
   image.src = URLCanvas();//キャンバスをURLにしてimageに代入
   context.clearRect(0, 0, canvas.width, canvas.height);//キャンバスをクリア
 

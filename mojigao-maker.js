@@ -158,7 +158,7 @@ JikkouButton.onclick = () => {
 function pushKaoBack(context) {
   var image = new Image();
   crossOrigin="anonymous";
-  image.src = "次だ.png";
+  image.src = "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/%E6%AC%A1%E3%81%9F%E3%82%99.png";
   return image;
 }
 function DrowText(text) {

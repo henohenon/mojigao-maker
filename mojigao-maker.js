@@ -99,7 +99,7 @@ const koteisize={
   "顔のみ-顔":[300,300]
 }
 const sosyoku_URLs={
-  "麦わら帽子":"./images/sosyoku/麦わら帽子"
+  "麦わら帽子":"./images/sosyoku/麦わら帽子.png"
 }
 const karada_URLs={
   "ひまわり":"./images/karada/ひまわり"
@@ -140,52 +140,122 @@ himawariButton.onclick=()=>{
 //todo。。。入力が空白なら押せないようにする。
 JikkouButton.onclick = () => {
   let text=TextInput.value;//入力された単語(?)
-  
-  //image配列
-  let images = new Array();
+  let kaotype=0;
+
+
+  let images=new Array();
+  let img_trans=new Array();
   //作ったキャンバスを何に入れるか。変数を渡したいんだけど、値渡しになっちゃうから配列
   let canvasSet=new Array();
-  //画像の位置の配列
-  let imgs_trans=new Array();
-
+  
+  kaotype=whichMojigao(text);
+  console.log(kaotype,text,whichMojigao(text));
+  images=setMojigao(text,kaotype);
+  canvasSet[0]=mojigaoURL;
+  loadimages(images,canvasSet,setMojigaotrans(kaotype,"顔のみ-顔"));
+/*
   //背景がなし(0)なら
   if(haikeNum===0){
-    //背景あるなら
-  }else{
-    //入力されたやつが前に入力されたやつと同じなら(空白だった場合は押せない処理が上にある)
-    if(text===oldText){
-      //以前に文字顔を作っていないなら
-      if(mojigaoURL===""){
-        //顔周りの装飾系をつなげる（念の為concat）
-        images=images.concat(setSosyoku(sosyokuNum));
-        //文字顔をimage配列に
-        images=images.concat(setMojigao(whichMojigao(text)));
-
-        //todo...位置系の配列を作る
-      //前に文字顔が作ってあって、同じやつなら
-      }else{
-        //顔周りの装飾系をつなげる
-        images=images.concat(setSosyoku(sosyokuNum));
-        //保存してある文字顔を流用
-        images=images.concat(mojigaoURL);
-      }
-      //使い回せるようにキャンバスを保存する。どの変数に入れるかをセット
-      canvasSet[0]=kaoBoshiURL;
+  //体がなし(0)なら
+  if(karadaNum===0){
+    //装飾(防止とか)がなし(0)なら
+    if(sosyokuNum===0){
+      /////背景も体も装飾もなし
+      kaotype= whichMojigao(text);
+      images=images.concat(setMojigao(kaotype));
+      imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype,"顔のみ-顔"));
+    //装飾(防止とか)あるなら
     }else{
-
+      /////背景・体なし、装飾あり
+      kaotype= whichMojigao(text);
+      images=images.concat(setMojigao(kaotype));
+      images=images.concat(setSoshoku(sosyokuNum));
+      imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+      imgs_trans=imgs_trans.concat(setSoshokutrans(sosyokuNum));
+    }
+  //体あるなら
+  }else{
+    //装飾(防止とか)がなし(0)なら
+    if(sosyokuNum===0){
+      /////背景なし、体・装飾あり
+      kaotype= whichMojigao(text);
+      images=images.concat(setKarada(karadaNum));
+      images=images.concat(setMojigao(kaotype));
+      images=images.concat(setSoshoku(sosyokuNum));
+      imgs_trans=imgs_trans.concat(setKaradatrans(karadaNum));
+      imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+      imgs_trans=imgs_trans.concat(setSoshokutrans(sosyokuNum));
+      //装飾(防止とか)あるなら
+    }else{
+      /////背景・装飾なし、体あり
+      kaotype= whichMojigao(text);
+      images=images.concat(setKarada(karadaNum));
+      images=images.concat(setMojigao(kaotype));
+      imgs_trans=imgs_trans.concat(setKaradatrans(karadaNum));
+      imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
     }
   }
+  //背景あるなら
+  }else{
+    //体がなし(0)なら
+    if(karadaNum===0){
+      //装飾(防止とか)がなし(0)なら
+      if(sosyokuNum===0){
+        //////装飾・体なし、背景あり
+        kaotype= whichMojigao(text);
+        images=images.concat(setHaike(haikeNum));
+        images=images.concat(setMojigao(kaotype));
+        imgs_trans=imgs_trans.concat(setHaiketrans(haikeNum));
+        imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+        //装飾(防止とか)あるなら
+      }else{
+        /////装飾・背景あり、体なし
+        kaotype= whichMojigao(text);
+        images=images.concat(setHaike(haikeNum));
+        images=images.concat(setMojigao(kaotype));
+        images=images.concat(setSoshoku(sosyokuNum));
+        imgs_trans=imgs_trans.concat(setHaiketrans(haikeNum));
+        imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+        imgs_trans=imgs_trans.concat(setSoshokutrans(sosyokuNum));
+      }
+    //体あるなら
+    }else{
+      //装飾(防止とか)がなし(0)なら
+      if(sosyokuNum===0){
+        /////体・背景あり、装飾なし
+        kaotype= whichMojigao(text);
+        images=images.concat(setHaike(haikeNum));
+        images=images.concat(setKarada(karadaNum));
+        images=images.concat(setMojigao(kaotype));
+        imgs_trans=imgs_trans.concat(setHaiketrans(haikeNum));
+        imgs_trans=imgs_trans.concat(setKaradatrans(karadaNum));
+        imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+      //装飾(防止とか)あるなら
+      }else{
+        /////背景・体・装飾、全部あり
+        kaotype= whichMojigao(text);
+        images=images.concat(setHaike(haikeNum));
+        images=images.concat(setKarada(karadaNum));
+        images=images.concat(setMojigao(kaotype));
+        images=images.concat(setSoshoku(sosyokuNum));
+        imgs_trans=imgs_trans.concat(setHaiketrans(haikeNum));
+        imgs_trans=imgs_trans.concat(setKaradatrans(karadaNum));
+        imgs_trans=imgs_trans.concat(setMojigaotrans(kaotype));
+        imgs_trans=imgs_trans.concat(setSoshokutrans(sosyokuNum));
+      }
+    }
+  }
+*/
   oldText=text;//古いtext変数に前のtextを入れる
-  loadimages(images,canvaSset,imgs_trans);
 
 }
 function whichMojigao(text){//どの文字顔を使うか関数
   const mojitypes = [...Array(mojipos.length).keys()];//文字顔の型(文字の位置)配列の長さの[0,1,2]みたいな番号配列を作る
   while (true){//(ずっと)繰り返す！
-    kaotype=Math.floor( Math.random() * mojitypes.length );//文字顔の型(文字の位置)の中からランダムで持ってきてる
+    let kaotype=Math.floor( Math.random() * mojitypes.length );//文字顔の型(文字の位置)の中からランダムで持ってきてる
     if(((mojipos[mojitypes[kaotype]].length)%(text.length))===0){//ランダムに選んだ文字顔の型が文字数に合いそうなら
       kaotype=mojitypes[kaotype];//番号配列の何番目かになってるんで、文字顔の型(文字の位置)の何番目かに変更
-      return;//関数を離脱
+      return kaotype;//関数を離脱
     }else{//文字顔の型が文字数に合わなかったら
       mojitypes.splice(kaotype,1);//合わなかったやつを消す
     }
@@ -195,23 +265,22 @@ function whichMojigao(text){//どの文字顔を使うか関数
     }
   }
 }
-function setMojiGaoTrans(){
+function setMojigaotrans(kaotype,kaopos){
   let imagestrans=new Array();
-  imagestrans.push(koteipos["顔のみ-顔"]);
+  imagestrans.push(koteipos[kaopos]);
   imagestrans= imagestrans.concat(mojipos[kaotype]);
-  imagestrans.push(koteisize["顔のみ-顔"]);
+  imagestrans.push(koteisize[kaopos]);
   imagestrans= imagestrans.concat(mojisize[kaotype]);
   return imagestrans;
 }
-function setMojigao(kaotype){
+function setMojigao( text,kaotype){
   //入力内容
   
-  
-  var teximages = new Array();
+  console.log(kaotype);
+  let teximages = new Array();
   teximages.push(URLtoImage("https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/%E6%AC%A1%E3%81%9F%E3%82%99.png"));//顔の後ろの白丸みたいなやつを画像配列にいれる。
   ClearCanvas();//キャンバスをクリア
 
-  console.log( mojipos[kaotype].length, mojipos[kaotype],text.length);
   for (let i = 0; i < mojipos[kaotype].length;i+=text.length)//文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
   {
     for(let j=0;j<text.length;j++)//入力された文字の長さ会繰り返す。
@@ -219,13 +288,33 @@ function setMojigao(kaotype){
       teximages.push(MakeMojiImage(text[j]));//画像配列に文字を追加
     }
   }
+  teximages.push(URLtoImage(sosyoku_URLs["麦わら帽子"]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
   return teximages;
 }
-function drowsosyoku(kaotype){
- }
-function drowkarada(){
- 
+function setSoshoku(soshokuNumb){
+  let teximages = new Array();
+  teximages.push(URLtoImage(sosyoku_URLs[soshokuNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
+  ClearCanvas();//キャンバスをクリア
+  return teximages;  
 }
+function setKarada(karadaNumb){
+  let teximages = new Array();
+  teximages.push(URLtoImage(karada_URLs[karadaNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
+  ClearCanvas();//キャンバスをクリア
+  return teximages;   
+}
+function setHaike(haikeNumb){
+  let teximages = new Array();
+  teximages.push(URLtoImage(haike_URLs[haikeNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
+  ClearCanvas();//キャンバスをクリア
+  return teximages;   
+}
+
+
+
+
+
+
 
 function DrowText(text) {//文字(text)をcanvasに書く変数。
   const ctx = canvas.getContext("2d");//キャンバスの何かを所得(わかってない)
@@ -257,8 +346,8 @@ function loadimages(teximages,setCanvasURL,imgs_trans){
       imgCount++;//いくつ読み込み終わったか変数を+1
       if (imgCount >= teximages.length) {// すべての画像読み込みが完了した時
         DrowResults(teximages,imgs_trans);//描画
-        setCanvasURL[0]=canvas.toDataURL();//文字顔のURLを登録
-        console.log(mojigaoURL+"きたきた");
+        console.log("きてる？");
+        //setCanvasURL[0]=canvas.toDataURL();//文字顔のURLを登録
       }
     }
   }
@@ -267,14 +356,16 @@ function loadimages(teximages,setCanvasURL,imgs_trans){
 function DrowResults(images,img_trans) {// 各画像を順番に描画関数
   let context = canvas.getContext('2d');//キャンパスを所得してる(？)
   console.log(images,img_trans);
+  //ClearCanvas();
   for (var i = 0; i < images.length; i++) {//文字とかの画像回繰り返す
     context.drawImage(images[i], 0, 0, canvas.width/2, canvas.height/2, img_trans[i][0], img_trans[i][1], img_trans[i+(img_trans.length/2)][0], img_trans[i+(img_trans.length/2)][1]);//配列に入ってる位置にいい感じに。
   }
 }
-
+0
 function ClearCanvas(){
   let context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
+  console.log("くりあ");
 }
 
 /***
@@ -298,5 +389,10 @@ function ClearCanvas(){
     }
     //一旦文字顔を保存(配列なのは値渡しになっちゃうから)
     canvasSet[0]=mojigaoURL;
+  
+
+
+
+ 
   
  */

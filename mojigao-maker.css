@@ -107,7 +107,7 @@ body{
 
 
 
-.btn-border-bottom {
+.btn-border-buttom {
   border: none;  /* 枠線を消す */
   outline: none; /* クリックしたときに表示される枠線を消す */
   background: transparent; /* 背景の灰色を消す */
@@ -120,7 +120,7 @@ body{
   margin: 10px;
 }
 
-.btn-border-bottom:before {
+.btn-border-buttom:before {
   position: absolute;
   content: '';
   width: 100%;
@@ -131,11 +131,11 @@ body{
   background:#aaaaaa;
   transition: .2s;
 }
-.btn-border-bottom:hover {
+.btn-border-buttom:hover {
   color: #67a9ff;  
   
 }
-.btn-border-bottom:hover:before{
+.btn-border-buttom:hover:before{
   background:#67a9ff;
 }
 

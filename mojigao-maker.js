@@ -1,3 +1,7 @@
+/***
+ * 0,0から、画像のサイズまでくり抜いて、サイズをキャンバスに合わせれば、書いた場所に行く。
+ ***/
+
 const JikkouButton = document.getElementById('jikkou');
 const UrlInput= document.getElementById('url-input');
 const resultDivided = document.getElementById('result-area');
@@ -5,6 +9,9 @@ const TextInput = document.getElementById("input-text");
 const HozonButton = document.getElementById("hozon");
 const tokoButton = document.getElementById("toko");
 const canvas = document.getElementById('board');
+
+const mugiwaraButton = document.getElementById("mugiwara");
+
 
 const himawariButton = document.getElementById("himawari");
 
@@ -93,13 +100,17 @@ const mojisize=
   ]
 ];
 const koteipos={
-  "顔のみ-顔":[0,0]
+  "顔のみ-顔":[[0,0]],
+  "顔と装飾-顔":[[0,0]],
+  "顔と装飾-装飾":[[0,0]]
 }
 const koteisize={
-  "顔のみ-顔":[300,300]
+  "顔のみ-顔":[[300,300]],
+  "顔と装飾-顔":[[300,300]],
+  "顔と装飾-装飾":[[300,300]]
 }
 const sosyoku_URLs={
-  "麦わら帽子":"./images/sosyoku/麦わら帽子.png"
+  "麦わら帽子":"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"
 }
 const karada_URLs={
   "ひまわり":"./images/karada/ひまわり"
@@ -115,9 +126,9 @@ const haike_URLs={
 HozonButton.onclick = () => {
   //let text=TextInput.value;
   let link = document.createElement('a');
-  link.href = mojigaoURL;//URLCanvas();
+  link.href = URLCanvas();//URLCanvas();
 
-  link.download = text+'.png';
+  link.download = oldText+'.png';
   /***
   if(text!==""){
   }else{
@@ -133,9 +144,38 @@ tokoButton.onclick = () => {
 }
 
 himawariButton.onclick=()=>{
+  karadaNum=1;
+
+}
+mugiwaraButton.onclick=()=>{
   sosyokuNum=1;
 
 }
+
+
+function sleep(waitSec, callbackFunc) {
+ 
+  // 経過時間（秒）
+  var spanedSec = 0;
+
+  // 1秒間隔で無名関数を実行
+  var id = setInterval(function () {
+
+      spanedSec++;
+
+      // 経過時間 >= 待機時間の場合、待機終了。
+      if (spanedSec >= waitSec) {
+
+          // タイマー停止
+          clearInterval(id);
+
+          // 完了時、コールバック関数を実行
+          if (callbackFunc) callbackFunc();
+      }
+  }, 1000);
+
+}
+
 
 //todo。。。入力が空白なら押せないようにする。
 JikkouButton.onclick = () => {
@@ -144,15 +184,35 @@ JikkouButton.onclick = () => {
 
 
   let images=new Array();
-  let img_trans=new Array();
   //作ったキャンバスを何に入れるか。変数を渡したいんだけど、値渡しになっちゃうから配列
   let canvasSet=new Array();
+  
+  
   
   kaotype=whichMojigao(text);
   console.log(kaotype,text,whichMojigao(text));
   images=setMojigao(text,kaotype);
-  canvasSet[0]=mojigaoURL;
-  loadimages(images,canvasSet,setMojigaotrans(kaotype,"顔のみ-顔"));
+  
+  
+  //要するにこんな感じの配列を宣言してる。[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。[[150,150],[150,150],[150,150]...]
+  let img_kurinuki=Array(mojipos[kaotype].length+1).fill(Array(2).fill(150),Array(2).fill(150));
+  let img_pos=images_pos= koteipos["顔のみ-顔"].concat(mojipos[kaotype]);
+  let img_size=images_pos= koteisize["顔のみ-顔"].concat(mojisize[kaotype]);
+  
+  loadimages(images,img_kurinuki,img_pos,img_size);
+  console.log("えーっと？");
+  if(sosyokuNum!==0){
+    sleep(1,function () {
+      ClearCanvas();
+      images=[URLtoImage(mojigaoURL),URLtoImage(sosyoku_URLs[sosyokuNum-1])];
+      img_kurinuki=[[300,300],[400,400]];
+      img_pos=[koteipos["顔と装飾-顔"],koteipos["顔と装飾-装飾"]];
+      img_size=[koteisize["顔と装飾-顔"],koteisize["顔と装飾-装飾"]];
+      loadimages(images,img_kurinuki,img_pos,img_size);
+    });
+  }
+  
+  
 /*
   //背景がなし(0)なら
   if(haikeNum===0){
@@ -278,7 +338,7 @@ function setMojigao( text,kaotype){
   
   console.log(kaotype);
   let teximages = new Array();
-  teximages.push(URLtoImage("https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/%E6%AC%A1%E3%81%9F%E3%82%99.png"));//顔の後ろの白丸みたいなやつを画像配列にいれる。
+  teximages.push(URLtoImage("https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/%E9%A1%94%E8%83%8C%E6%99%AF.png"));//顔の後ろの白丸みたいなやつを画像配列にいれる。
   ClearCanvas();//キャンバスをクリア
 
   for (let i = 0; i < mojipos[kaotype].length;i+=text.length)//文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
@@ -288,7 +348,6 @@ function setMojigao( text,kaotype){
       teximages.push(MakeMojiImage(text[j]));//画像配列に文字を追加
     }
   }
-  teximages.push(URLtoImage(sosyoku_URLs["麦わら帽子"]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
   return teximages;
 }
 function setSoshoku(soshokuNumb){
@@ -337,31 +396,31 @@ function URLtoImage(url){//URLをimage型(？)に変換して返すよ関数
   return image;
 }
 
-function loadimages(teximages,setCanvasURL,imgs_trans){
+function loadimages(teximages,img_kurinuki,img_pos,img_size){
   let imgCount=0;
+  
   for (let i = 0; i < teximages.length;i++)//文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
   {
     teximages[i].onload = function () {//画像の読み込みが終わったら
       //顔の後ろのやつだけ重く、顔の後ろのやつが前に来るため、全部のロードが終わってから描画させてる
       imgCount++;//いくつ読み込み終わったか変数を+1
       if (imgCount >= teximages.length) {// すべての画像読み込みが完了した時
-        DrowResults(teximages,imgs_trans);//描画
+        DrowResults(teximages,img_kurinuki,img_pos,img_size);//描画
         console.log("きてる？");
-        //setCanvasURL[0]=canvas.toDataURL();//文字顔のURLを登録
+        mojigaoURL=canvas.toDataURL();//文字顔のURLを登録
       }
     }
   }
 }
 
-function DrowResults(images,img_trans) {// 各画像を順番に描画関数
+function DrowResults(images,img_kurinuki,img_pos,img_size) {// 各画像を順番に描画関数
   let context = canvas.getContext('2d');//キャンパスを所得してる(？)
-  console.log(images,img_trans);
+  //console.log(images,img_trans);
   //ClearCanvas();
   for (var i = 0; i < images.length; i++) {//文字とかの画像回繰り返す
-    context.drawImage(images[i], 0, 0, canvas.width/2, canvas.height/2, img_trans[i][0], img_trans[i][1], img_trans[i+(img_trans.length/2)][0], img_trans[i+(img_trans.length/2)][1]);//配列に入ってる位置にいい感じに。
+    context.drawImage(images[i], 0, 0, img_kurinuki[i][0], img_kurinuki[i][1], img_pos[i][0], img_pos[i][1], img_size[i][0], img_size[i][1]);//配列に入ってる位置にいい感じに。
   }
 }
-0
 function ClearCanvas(){
   let context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);

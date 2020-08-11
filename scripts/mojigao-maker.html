@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>文字顔メーカー</title>
+  <link rel="stylesheet" href="./mojigao-maker.css">
+</head>
+<body>
+  <div class="top-ber">
+    <img class="title-image" src="https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB.png" alt="文字顔メーカー" title="タイトル">
+  </div>
+
+  <canvas id="board" width="300" height="300"></canvas>
+  <br>
+  <div class="cp_iptxt">
+    <input class="ef" id="input-text" type="text" maxlength="7" placeholder=" " >
+    <label for="input-text">7文字以内の好きな言葉を入力してください。</label>
+    <span class="focus_line"></span>
+  </div>
+  <br>
+  <div class="buttons">
+    <button class="btn-border-buttom" id="jikkou">実行</button>
+    <button class="btn-border-buttom" id="hozon">ダウンロード</button>
+  </div>
+  <div>
+    <button class="mugiwara-button" id="mugiwara">麦わら帽子</button>
+  </div>
+  <div>
+    <button class="himawari-button" id="himawari">ひまわり</button>
+  </div>
+  <form method="post" action="./hiroba.html">
+    <input value="" id="url-input"></input>
+    <button type="button" id="toko">投稿</button>
+  </form>
+  <div id="result-area"></div>
+  
+  <script src="./mojigao-maker.js"></script>
+</body>
+</html>

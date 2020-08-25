@@ -8,17 +8,8 @@ const canvas = document.getElementById('board');
 
 //実行ボタンと、ダウンロードボタンを所得
 const JikkouButton = document.getElementById('jikkou_button');
-const HozonButton = document.getElementById("download_button");
+const DownloadButton = document.getElementById("download_button");
 
-//帽子系のボタンを所得
-const noneButton = document.getElementById("none-hat_button");
-const mugiwaraButton = document.getElementById("mugiwara_button");
-
-//体系のボタンを所得
-const himawariButton = document.getElementById("himawari_button");
-
-//背景系のボタンを所得
-const Sunflower_fieldButton = document.getElementById("Sunflower_field_button");
 
 
 //キャンバスに描画するたびにここにキャンバスを入れてる
@@ -26,8 +17,11 @@ var nowCanvasURL = "";
 //文字顔のURL
 var mojigaoURL = "";
 
-//スリープ関数用の、今画像ロードしてるか。
+//スリープ関数用の、今画像ロード、描画してるか。
 var isload = false;
+
+//文字顔に使われている文字。ダウンロード用
+var mojigaotext = "";
 
 //文字の場所。パターンがいくつかの中にそれぞれの文字の場所のx座標とy座標
 const mojipos =
@@ -113,37 +107,37 @@ const body_head_size = (headSize + 30) / bodySize * canvasSize;
 
 /////背景と頭と帽子と。みたいな選択肢(？)絵の設定(？)ごとのパーツ(頭とか帽子とか)ごとのくり抜くやつ、サイズ、位置
 const koteitrans = {
-  head:{
+  head: {
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
-  head_hat:{
+  head_hat: {
     head: { kurinuki: [headSize, headSize], pos: [20, 30], size: [head_hat_size, head_hat_size] },
     hat: { kurinuki: [hatSize, hatSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
-  body_head:{
+  body_head: {
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] }
   },
-  background_head:{
+  background_head: {
     head: { kurinuki: [headSize, headSize], pos: [25, 25], size: [head_hat_size, head_hat_size] },
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
-  body_head_hat:{
+  body_head_hat: {
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] },
     hat: { kurinuki: [hatSize, hatSize], pos: [-15, -20], size: [hatSize / bodySize * canvasSize, hatSize / bodySize * canvasSize] }
   },
-  background_head_hat:{
+  background_head_hat: {
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [20, 30], size: [head_hat_size, head_hat_size] },
     hat: { kurinuki: [hatSize, hatSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
-  background_body_head:{
+  background_body_head: {
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] },
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] }
   },
-  background_body_head_hat:{
+  background_body_head_hat: {
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] },
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] },
@@ -154,17 +148,17 @@ const koteitrans = {
 ////体とかの画像のURL達。
 const image_URLs = {
   hat:
-    [
-      { name: "Straw_hat", URL: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png" }
-    ],
+  {
+    Straw_hat: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"
+  },
   body:
-    [
-      { name: "Sunflower", URL: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/karada/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png" }
-    ],
+  {
+    Sunflower: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/karada/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"
+  },
   background:
-    [
-      { name: "Sunflower_field", URL: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/haike/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png" }
-    ]
+  {
+    Sunflower_field: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/haike/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"
+  }
 }
 
 ////体によって顔の位置が違うので、体ごとの頭と帽子の位置。
@@ -173,9 +167,9 @@ const posByKarada = {
 }
 /////体、帽子、背景の、それぞれどれを使うか。
 var image_Num = {
-  hat: 0,
-  body: 0,
-  background: 0
+  hat: "none",
+  body: "none",
+  background: "none"
 }
 
 
@@ -183,257 +177,279 @@ var image_Num = {
 
 
 /////ダウンロードボタンがおされたら、ダウンロードする関数
-HozonButton.onclick = () => {
+DownloadButton.onclick = () => {
+  //aタグを作成
   let link = document.createElement('a');
-  link.href = URLCanvas();
-
-  link.download = oldText + '.png';
-  /***
-  if(text!==""){
-  }else{
-    link.download = text+'.png';
-  }
-  ***/
+  //aタグのherf属性にキャンバスをURL化したものを入れる。
+  link.href = canvas.toDataURL();
+  //ダウンロード時の名前を、入力されたテキスト.pngに設定
+  link.download = mojigaotext + '.png';
+  //リンクを強制的にクリックさせて、ダウンロード
   link.click();
 }
 
-mugiwaraButton.onclick = () => {
-  image_Num["hat"] = 1;
-
-}
-noneButton.onclick = () => {
-  image_Num["hat"] = 0;
-
-}
-himawariButton.onclick = () => {
-  image_Num["body"] = 1;
-
-}
-Sunflower_fieldButton.onclick = () => {
-  image_Num["background"] = 1;
-
-}
 
 
-
-
-function sleep(callbackFunc) {
-
-  // 経過時間（秒）
-
-  // 1秒間隔で無名関数を実行
+//ロードと描画が終わるまで待つ処理
+function wait(callbackFunc) {
+  // 0.3秒間隔で無名関数を実行
   var id = setInterval(function () {
-
-
-    // 経過時間 >= 待機時間の場合、待機終了。
+    // 画像のロード、描画が終わった、待機終了。
     if (isload === false) {
-
       // タイマー停止
       clearInterval(id);
-
       // 完了時、コールバック関数を実行
       if (callbackFunc) callbackFunc();
     }
-  }, 1000);
-
+  }, 300);
 }
 
 
-//todo。。。入力が空白なら押せないようにする。
+//実行ボタンが押されたなら
 JikkouButton.onclick = () => {
-  isload = true;
-  let text = TextInput.value;//入力された単語(?)
-  let kaotype = 0;
+  let text = TextInput.value;
+  console.log("ん"+text);
+  if (text) {
+    //waitするか変数をしてねってする
+    isload = true;
+    //文字顔の型の番号変数
+    let kaotype = 0;
+    //描画する画像の配列
+    let images = new Array();
+
+    //文字顔の型を指定
+    kaotype = whichMojigao(text);
+    //一文字ごとの画像を入れる
+    images = setMojigao(text, kaotype);
 
 
-  let images = new Array();
-  //作ったキャンバスを何に入れるか。変数を渡したいんだけど、値渡しになっちゃうから配列
-  let canvasSet = new Array();
+    //画像の、0,0からどこまでくり抜いたものを描画するか。こんな感じの配列を宣言[[150,150],[150,150],[150,150]...]。
+    //[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。顔の後ろの白丸と、文字のくり抜くサイズは等しいため
+    let img_kurinuki = Array(mojipos[kaotype].length + 1).fill(Array(2).fill(150), Array(2).fill(150));
+    //パーツごとの位置を設定。白丸の位置と、文字ごとの位置を、つないでる
+    let img_pos = images_pos = [koteitrans["head"]["head"].pos].concat(mojipos[kaotype]);
+    //上のサイズ版。
+    let img_size = images_pos = [koteitrans["head"]["head"].size].concat(mojisize[kaotype]);
 
+    //画像をロードが終わるまでまで待ってから描画
+    loadimages(images, img_kurinuki, img_pos, img_size);
+    //画像の描画が終わるまで待つ
+    wait(function () {
+      //背景など使用しているサブパーツの種類を入れる配列。「ひまわり」とかじゃなくて、「体」とかが入る
+      let others_array = new Array();
+      //こっちは、使用するサブパーツの種類を「_」でつないだ文字列が入る。
+      let others = "";
 
+      //描画するサブパーツの種類順に、使うかを判別
+      if (image_Num["background"] !== "none") {
+        others_array.push("background");
+        others += "background_"
+      }
+      if (image_Num["body"] !== "none") {
+        others_array.push("body");
+        others += "body_"
+      }
+      //顔だけは固定であるので、条件なしに追加
+      others += "head_"
+      others_array.push("head")
+      if (image_Num["hat"] !== "none") {
+        others_array.push("hat");
+        others += "hat_"
+      }
+      //使用するパーツを全部つなげた文字列を、「head_hat_」から、「head_hat」にする。
+      others = others.slice(0, -1);
 
-  kaotype = whichMojigao(text);
-  console.log(kaotype, text, whichMojigao(text));
-  images = setMojigao(text, kaotype);
+      //顔以外のサブパーツがあるなら
+      if (others !== "head") {
+        //文字顔のURLを今のキャンバスに設定
+        mojigaoURL = nowCanvasURL;
+        ClearCanvas();
+        /////描画する画像の配列とか、描画する画像の位置配列とかを初期化
+        images = [];
+        img_kurinuki = [];
+        img_pos = [];
+        img_size = [];
+        others_array.forEach(other => {
+          //頭なら、予め格納しておいたものを。それ以外なら、画像配列から。描画する画像配列に格納。
+          if (other === "head") {
+            images.push(URLtoImage(mojigaoURL));
+          } else {
+            images.push(URLtoImage(image_URLs[other][image_Num[other]]));
+          }
+          //くり抜く場所を、サブパーツの種類ごとに配列からもらい、描画する画像のくり抜き位置配列に格納
+          img_kurinuki.push(koteitrans[others][other].kurinuki);
+          //画像のサイズを、サブパーツの種類ごとに配列からもらい、描画する画像位置配列に格納
+          img_size.push(koteitrans[others][other].size);
+          //身体があるかつ、帽子と顔のいちを追加しようとしているなら。どのの体かによって帽子と顔の位置は、変わるため。
+          if (image_Num["body"] !== "none" && (other === "hat" || other === "head")) {
+            //体ごとの顔の位置＋帽子の位置が若干違うための微調整。
+            img_pos.push([posByKarada[image_Num["body"]][0] + koteitrans[others][other].pos[0],
+            posByKarada[image_Num["body"]][1] + koteitrans[others][other].pos[1]]);
+          } else {
+            //画像の場所を、サブパーツの種類ごとに配列からもらい、描画する画像の位置配列に格納  
+            img_pos.push(koteitrans[others][other].pos)
+          }
+        });
+        //画像のロードが終わるまで待ってから描画。
+        loadimages(images, img_kurinuki, img_pos, img_size);
+      }
+    });
 
-
-  //要するにこんな感じの配列を宣言してる。[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。[[150,150],[150,150],[150,150]...]
-  let img_kurinuki = Array(mojipos[kaotype].length + 1).fill(Array(2).fill(150), Array(2).fill(150));
-  console.log(koteitrans["head"]["head"].pos,koteitrans["head"]["head"].size)
-  let img_pos = images_pos = [koteitrans["head"]["head"].pos].concat(mojipos[kaotype]);
-  let img_size = images_pos = [koteitrans["head"]["head"].size].concat(mojisize[kaotype]);
-
-  loadimages(images, img_kurinuki, img_pos, img_size);
-  sleep(function () {
-
-    let others_array = new Array();
-    let others = "";
-
-    if (image_Num["background"] !== 0) {
-      others_array.push("background");
-      others += "background_"
-    }
-    if (image_Num["body"] !== 0) {
-      others_array.push("body");
-      others += "body_"
-    }
-    others += "head_"
-    others_array.push("head")
-    if (image_Num["hat"] !== 0) {
-      others_array.push("hat");
-      others += "hat_"
-    }
-    others = others.slice(0, -1);
-
-    if (others !== "head") {
-      ClearCanvas();
-      mojigaoURL = nowCanvasURL;
-      images = [];
-      img_kurinuki = [];
-      img_pos = [];
-      img_size = [];
-      others_array.forEach(other => {
-        if (other === "head") {
-          images.push(URLtoImage(mojigaoURL));
-        } else {
-          images.push(URLtoImage(image_URLs[other][image_Num[other] - 1].URL));
-        }
-        console.log(others + "-" + other);
-        img_kurinuki.push(koteitrans[others][other].kurinuki);
-        img_size.push(koteitrans[others][other].size);
-        if (image_Num["body"] !== 0 && (other === "hat" || other === "head")) {
-          img_pos.push([posByKarada[image_URLs["body"][image_Num["body"] - 1].name][0] + koteitrans[others][other].pos[0], posByKarada[image_URLs["body"][image_Num["body"] - 1].name][1] + koteitrans[others][other].pos[1]]);
-        } else {
-          img_pos.push(koteitrans[others][other].pos)
-        }
-      });
-      console.log("アホか俺");
-      loadimages(images, img_kurinuki, img_pos, img_size);
-
-    }
-  });
-
-  oldText = text;//古いtext変数に前のtextを入れる
-
+    mojigaotext = text;//ダウンロードの名前用の変数に、今の文字顔の文字を代入
+  }
 }
-function whichMojigao(text) {//どの文字顔を使うか関数
-  const mojitypes = [...Array(mojipos.length).keys()];//文字顔の型(文字の位置)配列の長さの[0,1,2]みたいな番号配列を作る
-  while (true) {//(ずっと)繰り返す！
-    let kaotype = Math.floor(Math.random() * mojitypes.length);//文字顔の型(文字の位置)の中からランダムで持ってきてる
-    if (((mojipos[mojitypes[kaotype]].length) % (text.length)) === 0) {//ランダムに選んだ文字顔の型が文字数に合いそうなら
-      kaotype = mojitypes[kaotype];//番号配列の何番目かになってるんで、文字顔の型(文字の位置)の何番目かに変更
-      return kaotype;//関数を離脱
-    } else {//文字顔の型が文字数に合わなかったら
-      mojitypes.splice(kaotype, 1);//合わなかったやつを消す
+
+//どの文字顔を使うか関数
+function whichMojigao(text) {
+  //文字顔の型(文字の位置)配列の長さ分の[0,1,2]みたいな連番の配列を作る
+  const mojitypes = [...Array(mojipos.length).keys()];
+  //(ずっと)繰り返す！
+  while (true) {
+    //連番配列の中から、ランダムで一つ取り出す。
+    let kaotype = Math.floor(Math.random() * mojitypes.length);
+    //ランダムに選んだ文字顔の型が文字数に合いそうなら
+    if (((mojipos[mojitypes[kaotype]].length) % (text.length)) === 0) {
+      //連番配列の何番目かになってるんで、文字顔の型(文字の位置)の何番目かに変更
+      kaotype = mojitypes[kaotype];
+      return kaotype;
+      //文字顔の型が文字数に合わなかったら
+    } else {
+      //合わなかったやつを連番配列から消す
+      mojitypes.splice(kaotype, 1);
     }
-    if (mojitypes.length <= 0) {//(ないとは思うけど)番号配列の長さが0(以下)になったら
+    //(ないはずだけど)番号配列の長さが0(以下)になったら(無限ループ対策)
+    if (mojitypes.length <= 0) {
       console.log("文字数に合う文字顔の型がありません。");//ないよーっていう
-      return;//関数を離脱
+      return;
     }
   }
 }
-function setMojigaotrans(kaotype, kaopos) {
-  let imagestrans = new Array();
-  imagestrans.push(koteipos[kaopos]);
-  imagestrans = imagestrans.concat(mojipos[kaotype]);
-  imagestrans.push(koteisize[kaopos]);
-  imagestrans = imagestrans.concat(mojisize[kaotype]);
-  return imagestrans;
-}
+
+//入力された文字を、画像にして返す関数
 function setMojigao(text, kaotype) {
-  //入力内容
-
-  console.log(kaotype);
+  //画像の配列
   let teximages = new Array();
-  teximages.push(URLtoImage("https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/%E9%A1%94%E8%83%8C%E6%99%AF.png"));//顔の後ろの白丸みたいなやつを画像配列にいれる。
-  ClearCanvas();//キャンバスをクリア
+  //顔の後ろの白丸みたいなやつを画像配列にいれる。
+  teximages.push(URLtoImage("https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/%E9%A1%94%E8%83%8C%E6%99%AF.png"));
+  ClearCanvas();
 
-  for (let i = 0; i < mojipos[kaotype].length; i += text.length)//文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
-  {
-    for (let j = 0; j < text.length; j++)//入力された文字の長さ会繰り返す。
-    {
-      teximages.push(MakeMojiImage(text[j]));//画像配列に文字を追加
+  /////短い文字が入力されたときも返せるように二重ループ
+  //文字顔のの文字数回繰り返す。入力された文字回足してる。
+  for (let i = 0; i < mojipos[kaotype].length; i += text.length) {
+    //入力された文字の長さ会繰り返す。
+    for (let j = 0; j < text.length; j++) {
+      //画像配列に文字を追加
+      teximages.push(MakeMojiImage(text[j]));
     }
   }
   return teximages;
 }
-function setSoshoku(soshokuNumb) {
-  let teximages = new Array();
-  teximages.push(URLtoImage(sosyoku_URLs[soshokuNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
-  ClearCanvas();//キャンバスをクリア
-  return teximages;
-}
-function setKarada(karadaNumb) {
-  let teximages = new Array();
-  teximages.push(URLtoImage(karada_URLs[karadaNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
-  ClearCanvas();//キャンバスをクリア
-  return teximages;
-}
-function setHaike(haikeNumb) {
-  let teximages = new Array();
-  teximages.push(URLtoImage(haike_URLs[haikeNumb]));//顔の後ろの白丸みたいなやつを画像配列にいれる。
-  ClearCanvas();//キャンバスをクリア
-  return teximages;
-}
 
-
-
-
-
-
-
-function DrowText(text) {//文字(text)をcanvasに書く変数。
-  const ctx = canvas.getContext("2d");//キャンバスの何かを所得(わかってない)
-  ctx.font = "48px serif";//フォントを指定
-  ctx.fillText(text, 30, 150);//書く。
-}
-function URLCanvas() {//キャンバスをURLにする関数(いるのかと言われると。。。)
-  return canvas.toDataURL();//URLにして返す。
-}
-function MakeMojiImage(moji) {//文字を画像にするよ関数
-  DrowText(moji);//文字をテキストとしてキャンバスに描画
-  let image = URLtoImage(URLCanvas());//キャンバスをimageに封じ込める。
-  ClearCanvas();//キャンバスをクリア
-  return image;//返す
-}
-function URLtoImage(url) {//URLをimage型(？)に変換して返すよ関数
-  var image = new Image();//宣言！
-  image.crossOrigin = "anonymous";//これがないとキャンバスが汚染されてダウンロードとかできなくなる(意味はわかってない)
-  image.src = url;//キャンバスをURLにしてimageに代入
+//文字を画像にするよ関数
+function MakeMojiImage(moji) {
+  //文字をテキストとしてキャンバスに描画
+  DrowText(moji);
+  //キャンバスをimageに封じ込める。
+  let image = URLtoImage(canvas.toDataURL());
+  ClearCanvas();
   return image;
 }
 
+//文字をcanvasに書く変数。(一文字ずつでしか使用していない。複数の文字でもいけるはず)
+function DrowText(text) {
+  //キャンバスの何かを所得(わかってない)
+  const ctx = canvas.getContext("2d");
+  //フォントを指定
+  ctx.font = "48px serif";
+  //書く。
+  ctx.fillText(text, 30, 150);
+}
+
+//URLをimage型(？)に変換して返すよ関数
+function URLtoImage(url) {
+  var image = new Image();
+  //これがないとキャンバスが汚染されてダウンロードとかできなくなる(意味はわかってない)
+  image.crossOrigin = "anonymous";
+  //キャンバスをURLにしてimageに代入
+  image.src = url;
+  return image;
+}
+
+//画像のロード完了まで待って、描画する関数
 function loadimages(teximages, img_kurinuki, img_pos, img_size) {
+  //ロードが終わった画像の数
   let imgCount = 0;
-
-  for (let i = 0; i < teximages.length; i++)//文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
-  {
-    console.log(teximages);
-    teximages[i].onload = function () {//画像の読み込みが終わったら
-      //顔の後ろのやつだけ重く、顔の後ろのやつが前に来るため、全部のロードが終わってから描画させてる
-      imgCount++;//いくつ読み込み終わったか変数を+1
-      if (imgCount >= teximages.length) {// すべての画像読み込みが完了した時
-
-        DrowResults(teximages, img_kurinuki, img_pos, img_size);//描画
+  
+  //文字顔の型(文字の位置配列)の文字数÷入力された、文字数回繰り返す。
+  for (let i = 0; i < teximages.length; i++) {
+    //画像の読み込みが終わったら
+    teximages[i].onload = function () {
+      //いくつ読み込み終わったか変数を+1
+      imgCount++;
+      // すべての画像読み込みが完了した時
+      if (imgCount >= teximages.length) {
+        //描画するよ関数
+        DrowResults(teximages, img_kurinuki, img_pos, img_size);
       }
     }
   }
 }
 
-function DrowResults(images, img_kurinuki, img_pos, img_size) {// 各画像を順番に描画関数
-  let context = canvas.getContext('2d');//キャンパスを所得してる(？)
-  //console.log(images,img_trans);
-  //ClearCanvas();
-  for (var i = 0; i < images.length; i++) {//文字とかの画像回繰り返す
-    context.drawImage(images[i], 0, 0, img_kurinuki[i][0], img_kurinuki[i][1], img_pos[i][0], img_pos[i][1], img_size[i][0], img_size[i][1]);//配列に入ってる位置にいい感じに。
-    //context.drawImage(mugi, 0, 0, 300, 300,100*i,100*i, 300,300);//配列に入ってる位置にいい感じに。
+// 各画像を順番に描画するよ関数
+function DrowResults(images, img_kurinuki, img_pos, img_size) {
+  //キャンパスのなにかを所得してる
+  
+  let context = canvas.getContext('2d');
+  //文字とかの画像回繰り返す
+  for (var i = 0; i < images.length; i++) {
+    //配列に入ってる位置とかに画像を描画。
+    context.drawImage(images[i], 0, 0, img_kurinuki[i][0], img_kurinuki[i][1], img_pos[i][0], img_pos[i][1], img_size[i][0], img_size[i][1]);
   }
-  console.log("どうだ？");
-  nowCanvasURL = canvas.toDataURL();//文字顔のURLを登録
+  //今のキャンバスのURLを格納
+  nowCanvasURL = canvas.toDataURL();
   isload = false;
 }
+//キャンバスをまっさらにする関数
 function ClearCanvas() {
+  //キャンバスの何かを所得
   let context = canvas.getContext('2d');
+  //0,0からデカさ分クリア
   context.clearRect(0, 0, canvas.width, canvas.height);
-  console.log("くりあ");
+}
+
+
+
+
+
+/////帽子系のボタンを所得
+const noneButton = document.getElementById("none-hat_button");
+const mugiwaraButton = document.getElementById("mugiwara_button");
+
+/////帽子系のボタンの押されたら処理
+noneButton.onclick = () => {
+  image_Num["hat"] = "none";
+}
+mugiwaraButton.onclick = () => {
+  image_Num["hat"] = "Straw_hat";
+}
+
+
+
+/////体系のボタンを所得
+const himawariButton = document.getElementById("himawari_button");
+
+/////体系のボタンの押されたら処理
+himawariButton.onclick = () => {
+  image_Num["body"] = "Sunflower";
+}
+
+
+
+/////背景系のボタンを所得
+const Sunflower_fieldButton = document.getElementById("Sunflower_field_button");
+
+/////背景系のボタン
+Sunflower_fieldButton.onclick = () => {
+  image_Num["background"] = "Sunflower_field";
+
 }

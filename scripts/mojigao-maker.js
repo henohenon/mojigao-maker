@@ -105,9 +105,9 @@ const hatSize = 400;
 
 /////たくさん使う数は変数に格納。
 //顔が小さくなっちゃうので*30してる
-const head_hat_size = (headSize + 30) / hatSize * canvasSize;
+const head_hat_size = (headSize) / hatSize * canvasSize;
 //顔が小さくなっちゃうので*30してる
-const body_head_size = (headSize + 30) / bodySize * canvasSize;
+const body_head_size = (headSize+10) / bodySize * canvasSize;
 
 /////背景と頭と帽子と。みたいな選択肢(？)絵の設定(？)ごとのパーツ(頭とか帽子とか)ごとのくり抜くやつ、サイズ、位置
 const koteitrans = {
@@ -115,7 +115,7 @@ const koteitrans = {
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
   head_hat: {
-    head: { kurinuki: [headSize, headSize], pos: [20, 30], size: [head_hat_size, head_hat_size] },
+    head: { kurinuki: [headSize, headSize], pos: [37.5, 40], size: [head_hat_size, head_hat_size] },
     hat: { kurinuki: [hatSize, hatSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
   body_head: {
@@ -123,17 +123,17 @@ const koteitrans = {
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] }
   },
   background_head: {
-    head: { kurinuki: [headSize, headSize], pos: [25, 25], size: [head_hat_size, head_hat_size] },
+    head: { kurinuki: [headSize, headSize], pos: [15, 15], size: [headSize-30, headSize-30] },
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
   body_head_hat: {
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] },
-    hat: { kurinuki: [hatSize, hatSize], pos: [-15, -20], size: [hatSize / bodySize * canvasSize, hatSize / bodySize * canvasSize] }
+    hat: { kurinuki: [hatSize, hatSize], pos: [-20, -20], size: [hatSize / bodySize * canvasSize, hatSize / bodySize * canvasSize] }
   },
   background_head_hat: {
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] },
-    head: { kurinuki: [headSize, headSize], pos: [20, 30], size: [head_hat_size, head_hat_size] },
+    head: { kurinuki: [headSize, headSize], pos: [35, 35], size: [head_hat_size, head_hat_size] },
     hat: { kurinuki: [hatSize, hatSize], pos: [0, 0], size: [canvasSize, canvasSize] }
   },
   background_body_head: {
@@ -145,29 +145,16 @@ const koteitrans = {
     background: { kurinuki: [backgrountSize, backgrountSize], pos: [0, 0], size: [canvasSize, canvasSize] },
     body: { kurinuki: [bodySize, bodySize], pos: [0, 0], size: [canvasSize, canvasSize] },
     head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [body_head_size, body_head_size] },
-    hat: { kurinuki: [hatSize, hatSize], pos: [-10, -20], size: [hatSize / backgrountSize * canvasSize, hatSize / backgrountSize * canvasSize] }
+    hat: { kurinuki: [hatSize, hatSize], pos: [-20, -20], size: [hatSize / bodySize * canvasSize, hatSize / bodySize * canvasSize] }
   }
 };
 
 ////体とかの画像のURL達。
-const image_URLs = {
-  hat:
-  {
-    Straw_hat: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"
-  },
-  body:
-  {
-    Sunflower: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/karada/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"
-  },
-  background:
-  {
-    Sunflower_field: "https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/haike/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"
-  }
-}
 
 ////体によって顔の位置が違うので、体ごとの頭と帽子の位置。
 const posByKarada = {
-  Sunflower: [75.5, 45]
+  Sunflower: [80, 50],
+  Cat_body: [22.5,30],
 }
 /////体、帽子、背景の、それぞれどれを使うか。
 /** 
@@ -179,13 +166,16 @@ var image_Num = {
 **/
 const image_names={
   hat:[
-    {name:"Straw_hat",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"},
+    {name:"Straw_hat",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"},
+    {name:"Cat_ear",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E3%83%8D%E3%82%B3%E3%83%9F%E3%83%9F.png"},
   ],
   body:[
-    {name:"Sunflower",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/karada/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"},
+    {name:"Sunflower",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"},
+    {name:"Cat_body",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E3%83%8D%E3%82%B3%E4%BD%93.png"},
   ],
   background:[
-    {name:"Sunflower_field",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/haike/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"},
+    {name:"Sunflower_field",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"},
+    {name:"Japanese_style_house",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E5%92%8C%E9%A2%A8%E3%81%AE%E5%AE%B6.png"},
   ],
 }
 
@@ -225,7 +215,6 @@ function wait(callbackFunc) {
 JikkouButton.onclick = () => {
   
   let hat = hatSelect.selectedIndex;
-  console.log(image_URLs["hat"]["Straw_hat"]);
   let body=bodySelect.selectedIndex;
   let background=backgroundSelect.selectedIndex;
   var image_Num = {
@@ -469,6 +458,8 @@ mugiwaraButton.onclick = () => {
 
 
 
+/**
+
 /////体系のボタンを所得
 const himawariButton = document.getElementById("himawari_button");
 
@@ -487,3 +478,5 @@ Sunflower_fieldButton.onclick = () => {
   //image_Num["background"] = "Sunflower_field";
 
 }
+
+**/

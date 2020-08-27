@@ -18,51 +18,53 @@
     <span class="focus_line"></span>
   </div>
   <br>
-  <div class="container">
-    <span class="choose">Choose Gender</span>
-  
-      <div class="dropdown">
-        <div class="select">
-          <span>Select Gender</span>
-          <i class="fa fa-chevron-left"></i>
+  <div class="container pt20">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label class="control-label">帽子</label>
+            <div class="select-wrap">
+              <select id="hat-select">
+                <option id="none-hat_button">なし</option>
+                <option id="mugiwara_button">麦わら帽子</option>
+            </select>
+          </div>
         </div>
-        <input type="hidden" name="gender">
-        <ul class="dropdown-menu">
-          <li id="male">Male</li>
-          <li id="female">Female</li>
-        </ul>
+       </div>
+    </div>
+
+    <div class="container pt20">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label class="control-label">体</label>
+              <div class="select-wrap">
+                <select id="body-select">
+                  <option id="none-body_button">なし</option>
+                  <option id="sunflower_button">ひまわり</option>
+              </select>
+            </div>
+          </div>
+         </div>
       </div>
-    <span class="msg"></span>
-  </div>
 
+      <div class="container pt20">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label class="control-label">背景</label>
+                <div class="select-wrap">
+                  <select id="background-select">
+                    <option id="none-background_button">なし</option>
+                    <option id="sunflower-field_button">ひまわり畑</option>
+                </select>
+              </div>
+            </div>
+           </div>
+        </div>
+    
 
-  <p>血液型：<br>
-    <select name="blood">
-    <option value="A">A型</option>
-    <option value="B">B型</option>
-    <option value="O">O型</option>
-    <option value="AB">AB型</option>
-    </select></p>
-    <p>星座：<br>
-
-  <div class="buttons">
-    <button class="btn-border_buttom" id="jikkou_button">実行</button>
-    <button class="btn-border_buttom" id="download_button">ダウンロード</button>
-  </div>
-  <div>
-    <button class="mugiwara_button" id="mugiwara_button">麦わら帽子</button>
-    <button class="none-hat_button" id="none-hat_button">なし</button>
-  </div>
-  <div>
-    <button class="himawari_button" id="himawari_button">ひまわり</button>
-  </div>
-  <div>
-    <button class="Sunflower_field-button" id="Sunflower_field_button">ひまわり畑</button>
-  </div>
-  <form method="post" action="./hiroba.html">
-    <input value="" id="url-input"></input>
-    <button type="button" id="toko">投稿</button>
-  </form>
+  
   <div id="result-area"></div>
   
   <script src="./mojigao-maker.js"></script>

@@ -154,90 +154,88 @@ body{
 
 
 
-* {
-  outline: 0;
-  font-family: sans-serif
+
+.pt20{
+  padding-top: 20px;
 }
-span.msg,
-span.choose {
-  color: #555;
-  padding: 5px 0 10px;
-  display: inherit
+.row{
+  width: 30%;
+  margin: auto;
 }
-.container {
-  width: 500px;
-  margin: 50px auto 0;
-  text-align: center
+.inverse{
+  background: #000;
+  padding: 20px 0;
+  color: #fff;
+}
+.select-wrap {
+    position: relative;
+}
+.select-wrap:before {
+    z-index: 1;
+    position: absolute;
+    right: 15px;
+    top: 0;
+    content: "\f123";
+    font-family: "IonIcons";
+    line-height: 43px;
+    color: #7F878C;
+    pointer-events: none;
+}
+select{
+    outline:none;
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    background: none transparent;
+    vertical-align: middle;
+    font-size: inherit;
+    color: inherit;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 40px;
+    padding: 8px 12px;
+    border:1px solid #ddd;
+    color:#828c9a;
+    width:100%;
+    border-radius:3px;
+}
+select option{
+  background-color: #fff;
+  color: #333;
+}
+select::-ms-expand {
+  display: none;
+}
+select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #828c9a;
+}
+.select-wrap.select-primary:before{
+  color:#fff;
+}
+.select-wrap.select-primary > select{
+  background:#0084B4;
+  color:#fff;
+  border-color:#0084B4;
+}
+.select-wrap.select-primary > select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #fff;
 }
 
-/*Styling Selectbox*/
-.dropdown {
-  width: 300px;
-  display: inline-block;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 0 2px rgb(204, 204, 204);
-  transition: all .5s ease;
-  position: relative;
-  font-size: 14px;
-  color: #474747;
-  height: 100%;
-  text-align: left
+.select-wrap.select-inverse:before{
+  color:#fff;
 }
-.dropdown .select {
-    cursor: pointer;
-    display: block;
-    padding: 10px
+.select-wrap.select-inverse > select{
+  color:#fff;
+  border-color: #fff;
 }
-.dropdown .select > i {
-    font-size: 13px;
-    color: #888;
-    cursor: pointer;
-    transition: all .3s ease-in-out;
-    float: right;
-    line-height: 20px
-}
-.dropdown:hover {
-    box-shadow: 0 0 4px rgb(204, 204, 204)
-}
-.dropdown:active {
-    background-color: #f8f8f8
-}
-.dropdown.active:hover,
-.dropdown.active {
-    box-shadow: 0 0 4px rgb(204, 204, 204);
-    border-radius: 2px 2px 0 0;
-    background-color: #f8f8f8
-}
-.dropdown.active .select > i {
-    transform: rotate(-90deg)
-}
-.dropdown .dropdown-menu {
-    position: absolute;
-    background-color: #fff;
-    width: 100%;
-    left: 0;
-    margin-top: 1px;
-    box-shadow: 0 1px 2px rgb(204, 204, 204);
-    border-radius: 0 1px 2px 2px;
-    overflow: hidden;
-    display: none;
-    max-height: 144px;
-    overflow-y: auto;
-    z-index: 9
-}
-.dropdown .dropdown-menu li {
-    padding: 10px;
-    transition: all .2s ease-in-out;
-    cursor: pointer
-} 
-.dropdown .dropdown-menu {
-    padding: 0;
-    list-style: none
-}
-.dropdown .dropdown-menu li:hover {
-    background-color: #f2f2f2
-}
-.dropdown .dropdown-menu li:active {
-    background-color: #e2e2e2
+
+.select-wrap.select-inverse > select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #fff;
 }

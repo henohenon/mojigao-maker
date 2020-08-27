@@ -10,6 +10,10 @@ const canvas = document.getElementById('board');
 const JikkouButton = document.getElementById('jikkou_button');
 const DownloadButton = document.getElementById("download_button");
 
+const hatSelect=document.getElementById("hat-select");
+const bodySelect=document.getElementById("body-select");
+const backgroundSelect=document.getElementById("background-select");
+
 
 
 //キャンバスに描画するたびにここにキャンバスを入れてる
@@ -166,12 +170,24 @@ const posByKarada = {
   Sunflower: [75.5, 45]
 }
 /////体、帽子、背景の、それぞれどれを使うか。
+/** 
 var image_Num = {
   hat: "none",
   body: "none",
   background: "none"
 }
-
+**/
+const image_names={
+  hat:[
+    {name:"Straw_hat",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/sosyoku/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"},
+  ],
+  body:[
+    {name:"Sunflower",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/karada/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"},
+  ],
+  background:[
+    {name:"Sunflower_field",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/haike/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"},
+  ],
+}
 
 
 
@@ -207,6 +223,20 @@ function wait(callbackFunc) {
 
 //実行ボタンが押されたなら
 JikkouButton.onclick = () => {
+  
+  let hat = hatSelect.selectedIndex;
+  console.log(image_URLs["hat"]["Straw_hat"]);
+  let body=bodySelect.selectedIndex;
+  let background=backgroundSelect.selectedIndex;
+  var image_Num = {
+    hat: hatSelect.selectedIndex,
+    body: bodySelect.selectedIndex,
+    background: backgroundSelect.selectedIndex
+  }
+  
+
+
+
   let text = TextInput.value;
   console.log("ん"+text);
   if (text) {
@@ -241,18 +271,18 @@ JikkouButton.onclick = () => {
       let others = "";
 
       //描画するサブパーツの種類順に、使うかを判別
-      if (image_Num["background"] !== "none") {
+      if (image_Num["background"] !== 0) {
         others_array.push("background");
         others += "background_"
       }
-      if (image_Num["body"] !== "none") {
+      if (image_Num["body"] !== 0) {
         others_array.push("body");
         others += "body_"
       }
       //顔だけは固定であるので、条件なしに追加
       others += "head_"
       others_array.push("head")
-      if (image_Num["hat"] !== "none") {
+      if (image_Num["hat"] !== 0) {
         others_array.push("hat");
         others += "hat_"
       }
@@ -273,21 +303,25 @@ JikkouButton.onclick = () => {
           //頭なら、予め格納しておいたものを。それ以外なら、画像配列から。描画する画像配列に格納。
           if (other === "head") {
             images.push(URLtoImage(mojigaoURL));
+            console.log(image_names["body"][0].name);
           } else {
-            images.push(URLtoImage(image_URLs[other][image_Num[other]]));
+            //images.push(URLtoImage(image_URLs[other][image_Num[other]]));
+            console.log(image_names[other][image_Num[other]-1]);
+            images.push(URLtoImage(image_names[other][image_Num[other]-1].URL));
           }
           //くり抜く場所を、サブパーツの種類ごとに配列からもらい、描画する画像のくり抜き位置配列に格納
           img_kurinuki.push(koteitrans[others][other].kurinuki);
           //画像のサイズを、サブパーツの種類ごとに配列からもらい、描画する画像位置配列に格納
           img_size.push(koteitrans[others][other].size);
           //身体があるかつ、帽子と顔のいちを追加しようとしているなら。どのの体かによって帽子と顔の位置は、変わるため。
-          if (image_Num["body"] !== "none" && (other === "hat" || other === "head")) {
+          if (image_Num["body"] !== 0 && (other === "hat" || other === "head")) {
             //体ごとの顔の位置＋帽子の位置が若干違うための微調整。
-            img_pos.push([posByKarada[image_Num["body"]][0] + koteitrans[others][other].pos[0],
-            posByKarada[image_Num["body"]][1] + koteitrans[others][other].pos[1]]);
+            console.log(posByKarada[image_names["body"][image_Num["body"]-1].name][0]);
+            img_pos.push([posByKarada[image_names["body"][image_Num["body"]-1].name][0] + koteitrans[others][other].pos[0],
+            posByKarada[image_names["body"][image_Num["body"]-1].name][1] + koteitrans[others][other].pos[1]]);
           } else {
             //画像の場所を、サブパーツの種類ごとに配列からもらい、描画する画像の位置配列に格納  
-            img_pos.push(koteitrans[others][other].pos)
+            img_pos.push(koteitrans[others][other].pos);
           }
         });
         //画像のロードが終わるまで待ってから描画。
@@ -427,10 +461,10 @@ const mugiwaraButton = document.getElementById("mugiwara_button");
 
 /////帽子系のボタンの押されたら処理
 noneButton.onclick = () => {
-  image_Num["hat"] = "none";
+  //image_Num["hat"] = "none";
 }
 mugiwaraButton.onclick = () => {
-  image_Num["hat"] = "Straw_hat";
+  //image_Num["hat"] = "Straw_hat";
 }
 
 
@@ -440,7 +474,7 @@ const himawariButton = document.getElementById("himawari_button");
 
 /////体系のボタンの押されたら処理
 himawariButton.onclick = () => {
-  image_Num["body"] = "Sunflower";
+  //image_Num["body"] = "Sunflower";
 }
 
 
@@ -450,6 +484,6 @@ const Sunflower_fieldButton = document.getElementById("Sunflower_field_button");
 
 /////背景系のボタン
 Sunflower_fieldButton.onclick = () => {
-  image_Num["background"] = "Sunflower_field";
+  //image_Num["background"] = "Sunflower_field";
 
 }

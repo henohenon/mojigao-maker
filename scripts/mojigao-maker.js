@@ -24,6 +24,8 @@ var mojigaoURL = "";
 //スリープ関数用の、今画像ロード、描画してるか。
 var isload = false;
 
+var isdrow=false;
+
 //文字顔に使われている文字。ダウンロード用
 var mojigaotext = "";
 
@@ -196,14 +198,16 @@ const image_names={
 
 /////ダウンロードボタンがおされたら、ダウンロードする関数
 DownloadButton.onclick = () => {
-  //aタグを作成
-  let link = document.createElement('a');
-  //aタグのherf属性にキャンバスをURL化したものを入れる。
-  link.href = canvas.toDataURL();
-  //ダウンロード時の名前を、入力されたテキスト.pngに設定
-  link.download = mojigaotext + '.png';
-  //リンクを強制的にクリックさせて、ダウンロード
-  link.click();
+  if(mojigaotext!==""&&isdrow===false){
+    //aタグを作成
+    let link = document.createElement('a');
+    //aタグのherf属性にキャンバスをURL化したものを入れる。
+    link.href = canvas.toDataURL();
+    //ダウンロード時の名前を、入力されたテキスト.pngに設定
+    link.download = mojigaotext + '.png';
+    //リンクを強制的にクリックさせて、ダウンロード
+    link.click();
+  }
 }
 
 
@@ -217,7 +221,9 @@ function wait(callbackFunc) {
       // タイマー停止
       clearInterval(id);
       // 完了時、コールバック関数を実行
-      if (callbackFunc) callbackFunc();
+      if (callbackFunc) {
+        callbackFunc();
+      }
     }
   }, 300);
 }
@@ -226,113 +232,118 @@ function wait(callbackFunc) {
 //実行ボタンが押されたなら
 JikkouButton.onclick = () => {
   
-  let hat = hatSelect.selectedIndex;
-  let body=bodySelect.selectedIndex;
-  let background=backgroundSelect.selectedIndex;
+  let text = TextInput.value;
+  
+
+
+
+  if (text!==""&&isdrow===false) {
+    start(text);
+  }else{
+    console.log("画像の描画が終わるまでお待ち下さい。");
+  }
+}
+
+
+function start(text){
+  isdrow=true;
   var image_Num = {
     hat: hatSelect.selectedIndex,
     body: bodySelect.selectedIndex,
     background: backgroundSelect.selectedIndex
   }
-  
-
-
-
-  let text = TextInput.value;
-  console.log("ん"+text);
-  if (text) {
     //waitするか変数をしてねってする
-    isload = true;
-    //文字顔の型の番号変数
-    let kaotype = 0;
-    //描画する画像の配列
-    let images = new Array();
+  isload = true;
+  //文字顔の型の番号変数
+  let kaotype = 0;
+  //描画する画像の配列
+  let images = new Array();
 
-    //文字顔の型を指定
-    kaotype = whichMojigao(text);
-    //一文字ごとの画像を入れる
-    images = setMojigao(text, kaotype);
+  //文字顔の型を指定
+  kaotype = whichMojigao(text);
+  //一文字ごとの画像を入れる
+  images = setMojigao(text, kaotype);
 
 
-    //画像の、0,0からどこまでくり抜いたものを描画するか。こんな感じの配列を宣言[[150,150],[150,150],[150,150]...]。
-    //[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。顔の後ろの白丸と、文字のくり抜くサイズは等しいため
-    let img_kurinuki = Array(mojipos[kaotype].length + 1).fill(Array(2).fill(150), Array(2).fill(150));
-    //パーツごとの位置を設定。白丸の位置と、文字ごとの位置を、つないでる
-    let img_pos = images_pos = [koteitrans["head"]["head"].pos].concat(mojipos[kaotype]);
-    //上のサイズ版。
-    let img_size = images_pos = [koteitrans["head"]["head"].size].concat(mojisize[kaotype]);
+  //画像の、0,0からどこまでくり抜いたものを描画するか。こんな感じの配列を宣言[[150,150],[150,150],[150,150]...]。
+  //[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。顔の後ろの白丸と、文字のくり抜くサイズは等しいため
+  let img_kurinuki = Array(mojipos[kaotype].length + 1).fill(Array(2).fill(150), Array(2).fill(150));
+  //パーツごとの位置を設定。白丸の位置と、文字ごとの位置を、つないでる
+  let img_pos = images_pos = [koteitrans["head"]["head"].pos].concat(mojipos[kaotype]);
+  //上のサイズ版。
+  let img_size = images_pos = [koteitrans["head"]["head"].size].concat(mojisize[kaotype]);
+  
+  //画像をロードが終わるまでまで待ってから描画
+  loadimages(images, img_kurinuki, img_pos, img_size);
+  //画像の描画が終わるまで待つ
+  wait(function () {
+    //背景など使用しているサブパーツの種類を入れる配列。「ひまわり」とかじゃなくて、「体」とかが入る
+    let others_array = new Array();
+    //こっちは、使用するサブパーツの種類を「_」でつないだ文字列が入る。
+    let others = "";
 
-    //画像をロードが終わるまでまで待ってから描画
-    loadimages(images, img_kurinuki, img_pos, img_size);
-    //画像の描画が終わるまで待つ
-    wait(function () {
-      //背景など使用しているサブパーツの種類を入れる配列。「ひまわり」とかじゃなくて、「体」とかが入る
-      let others_array = new Array();
-      //こっちは、使用するサブパーツの種類を「_」でつないだ文字列が入る。
-      let others = "";
+    //描画するサブパーツの種類順に、使うかを判別
+    if (image_Num["background"] !== 0) {
+      others_array.push("background");
+      others += "background_"
+    }
+    if (image_Num["body"] !== 0) {
+      others_array.push("body");
+      others += "body_"
+    }
+    //顔だけは固定であるので、条件なしに追加
+    others += "head_"
+    others_array.push("head")
+    if (image_Num["hat"] !== 0) {
+      others_array.push("hat");
+      others += "hat_"
+    }
+    //使用するパーツを全部つなげた文字列を、「head_hat_」から、「head_hat」にする。
+    others = others.slice(0, -1);
+    
+    //顔以外のサブパーツがあるなら
+    if (others !== "head") {
+      //文字顔のURLを今のキャンバスに設定
+      mojigaoURL = nowCanvasURL;
+      ClearCanvas();
+      /////描画する画像の配列とか、描画する画像の位置配列とかを初期化
+      images = [];
+      img_kurinuki = [];
+      img_pos = [];
+      img_size = [];
+      others_array.forEach(other => {
+        //頭なら、予め格納しておいたものを。それ以外なら、画像配列から。描画する画像配列に格納。
+        if (other === "head") {
+          images.push(URLtoImage(mojigaoURL));
+        } else {
+          //images.push(URLtoImage(image_URLs[other][image_Num[other]]));
+          images.push(URLtoImage(image_names[other][image_Num[other]-1].URL));
+        }
+        //くり抜く場所を、サブパーツの種類ごとに配列からもらい、描画する画像のくり抜き位置配列に格納
+        img_kurinuki.push(koteitrans[others][other].kurinuki);
+        //画像のサイズを、サブパーツの種類ごとに配列からもらい、描画する画像位置配列に格納
+        img_size.push(koteitrans[others][other].size);
+        //身体があるかつ、帽子と顔のいちを追加しようとしているなら。どのの体かによって帽子と顔の位置は、変わるため。
+        if (image_Num["body"] !== 0 && (other === "hat" || other === "head")) {
+          //体ごとの顔の位置＋帽子の位置が若干違うための微調整。
+          img_pos.push([posByKarada[image_names["body"][image_Num["body"]-1].name][0] + koteitrans[others][other].pos[0],
+          posByKarada[image_names["body"][image_Num["body"]-1].name][1] + koteitrans[others][other].pos[1]]);
+        } else {
+          //画像の場所を、サブパーツの種類ごとに配列からもらい、描画する画像の位置配列に格納  
+          img_pos.push(koteitrans[others][other].pos);
+        }
+      });
+      //画像のロードが終わるまで待ってから描画。
+      loadimages(images, img_kurinuki, img_pos, img_size);
+      wait(function() {
+        isdrow=false;
+      })
+    }
+  });
 
-      //描画するサブパーツの種類順に、使うかを判別
-      if (image_Num["background"] !== 0) {
-        others_array.push("background");
-        others += "background_"
-      }
-      if (image_Num["body"] !== 0) {
-        others_array.push("body");
-        others += "body_"
-      }
-      //顔だけは固定であるので、条件なしに追加
-      others += "head_"
-      others_array.push("head")
-      if (image_Num["hat"] !== 0) {
-        others_array.push("hat");
-        others += "hat_"
-      }
-      //使用するパーツを全部つなげた文字列を、「head_hat_」から、「head_hat」にする。
-      others = others.slice(0, -1);
-
-      //顔以外のサブパーツがあるなら
-      if (others !== "head") {
-        //文字顔のURLを今のキャンバスに設定
-        mojigaoURL = nowCanvasURL;
-        ClearCanvas();
-        /////描画する画像の配列とか、描画する画像の位置配列とかを初期化
-        images = [];
-        img_kurinuki = [];
-        img_pos = [];
-        img_size = [];
-        others_array.forEach(other => {
-          //頭なら、予め格納しておいたものを。それ以外なら、画像配列から。描画する画像配列に格納。
-          if (other === "head") {
-            images.push(URLtoImage(mojigaoURL));
-            console.log(image_names["body"][0].name);
-          } else {
-            //images.push(URLtoImage(image_URLs[other][image_Num[other]]));
-            console.log(image_names[other][image_Num[other]-1]);
-            images.push(URLtoImage(image_names[other][image_Num[other]-1].URL));
-          }
-          //くり抜く場所を、サブパーツの種類ごとに配列からもらい、描画する画像のくり抜き位置配列に格納
-          img_kurinuki.push(koteitrans[others][other].kurinuki);
-          //画像のサイズを、サブパーツの種類ごとに配列からもらい、描画する画像位置配列に格納
-          img_size.push(koteitrans[others][other].size);
-          //身体があるかつ、帽子と顔のいちを追加しようとしているなら。どのの体かによって帽子と顔の位置は、変わるため。
-          if (image_Num["body"] !== 0 && (other === "hat" || other === "head")) {
-            //体ごとの顔の位置＋帽子の位置が若干違うための微調整。
-            console.log(posByKarada[image_names["body"][image_Num["body"]-1].name][0]);
-            img_pos.push([posByKarada[image_names["body"][image_Num["body"]-1].name][0] + koteitrans[others][other].pos[0],
-            posByKarada[image_names["body"][image_Num["body"]-1].name][1] + koteitrans[others][other].pos[1]]);
-          } else {
-            //画像の場所を、サブパーツの種類ごとに配列からもらい、描画する画像の位置配列に格納  
-            img_pos.push(koteitrans[others][other].pos);
-          }
-        });
-        //画像のロードが終わるまで待ってから描画。
-        loadimages(images, img_kurinuki, img_pos, img_size);
-      }
-    });
-
-    mojigaotext = text;//ダウンロードの名前用の変数に、今の文字顔の文字を代入
-  }
+  mojigaotext = text;//ダウンロードの名前用の変数に、今の文字顔の文字を代入
 }
+
 
 //どの文字顔を使うか関数
 function whichMojigao(text) {

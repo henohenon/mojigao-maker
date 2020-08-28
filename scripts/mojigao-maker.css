@@ -51,7 +51,7 @@ body{
 .cp_iptxt {
   position: relative;
 	width: 30%;
-	margin: 0% 35%;
+	margin: 1% 35%;
   text-align: center;
 }
 .cp_iptxt input[type='text'] {

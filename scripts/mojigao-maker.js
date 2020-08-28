@@ -155,7 +155,8 @@ const koteitrans = {
 const posByKarada = {
   Sunflower: [80, 50],
   Cat_body: [22.5,30],
-  Angel: [40,30]
+  Angel: [40,30],
+  Chimera: [135,50]
 }
 /////体、帽子、背景の、それぞれどれを使うか。
 /** 
@@ -170,16 +171,19 @@ const image_names={
     {name:"Straw_hat",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E9%BA%A6%E3%82%8F%E3%82%89%E5%B8%BD%E5%AD%90.png"},
     {name:"Cat_ear",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E3%83%8D%E3%82%B3%E3%83%9F%E3%83%9F.png"},
     {name:"Angel_ring",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E5%A4%A9%E4%BD%BF%E3%81%AE%E8%BC%AA.png"},
+    {name:"Crown",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/hat/%E7%8E%8B%E5%86%A0.png"},
   ],
   body:[
     {name:"Sunflower",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A.png"},
     {name:"Cat_body",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E3%83%8D%E3%82%B3%E4%BD%93.png"},
     {name:"Angel",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E5%A4%A9%E4%BD%BF.png"},
+    {name:"Chimera",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/body/%E3%82%AD%E3%83%A1%E3%83%A9.png"},
   ],
   background:[
     {name:"Sunflower_field",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%E7%95%91.png"},
     {name:"Japanese_style_house",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E5%92%8C%E9%A2%A8%E3%81%AE%E5%AE%B6.png"},
     {name:"Halo",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E5%BE%8C%E5%85%89.png"},
+    {name:"Summon",URL:"https://raw.githubusercontent.com/henoheTK/mojigao-maker/master/images/background/%E5%8F%AC%E5%96%9A.png"},
   ],
 }
 

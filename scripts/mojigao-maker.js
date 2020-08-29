@@ -1,6 +1,7 @@
 /////所得系
 //メッセージを伝えたりするところを所得
 const resultDivided = document.getElementById('result-area');
+const makingText=document.getElementById("making-text")
 //入力欄を所得
 const TextInput = document.getElementById("input-text");
 //キャンバスを所得
@@ -203,6 +204,8 @@ const random_strings=[
   "セーフアウト",
   "こびとのむら",
   "カカポ",
+  "つよくいきて",
+  "6億円"
 ]
 
 RandomButton.onclick=()=>{
@@ -270,6 +273,8 @@ function start_making(text){
   let kaotype = 0;
   //描画する画像の配列
   let images = new Array();
+
+  makingText.style.opacity=0.7;
 
   //文字顔の型を指定
   kaotype = whichMojigao(text);
@@ -367,9 +372,12 @@ function start_making(text){
       loadimages(images, img_kurinuki, img_pos, img_size);
       wait(function() {
         isdrow=false;
+        makingText.style.opacity=0;
       })
     }else{
       isdrow=false;
+      makingText.style.opacity=0;
+
     }
   });
 

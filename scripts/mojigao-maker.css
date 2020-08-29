@@ -218,3 +218,21 @@ select:{
   padding:0;
   opacity: 0%;
 }
+
+
+.kiyaku-link{
+  position: absolute;
+  text-decoration: none;
+  top: 40px;
+  left: 84.5%;
+  font-size:15pt;
+  color:#ffffff;
+}
+.kiyaku-p
+{
+  position: absolute;
+  color:#ffffff;
+  top: 60px;
+  left: 80%;
+ 
+}

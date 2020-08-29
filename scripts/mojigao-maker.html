@@ -18,63 +18,47 @@
     <span class="focus_line"></span>
   </div>
   <br>
-  <div class="container pt20">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group">
-          <label class="control-label">帽子</label>
-            <div class="select-wrap">
-              <select id="hat-select">
-                <option id="none-hat_button">なし</option>
-                <option id="mugiwara_button">麦わら帽子</option>
-                <option id="cat-ear_button">ネコミミ</option>
-                <option id="angel-ring_button">天使の輪</option>
-                <option id="crown_button">王冠</option>
-                <option id="tyonmage_button">ちょんまげ</option>
-              </select>
-          </div>
-        </div>
-       </div>
-    </div>
-
-    <div class="container pt20">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label class="control-label">体</label>
-              <div class="select-wrap">
-                <select id="body-select">
-                  <option id="none-body_button">なし</option>
-                  <option id="sunflower_button">ひまわり</option>
-                  <option id="cat-body_button">ねこ</option>
-                  <option id="angel_button">天使</option>
-                  <option id="chimera_button">キメラ</option>
-                  <option id="samurai_button">サムライ</option>
-                </select>
-            </div>
-          </div>
-         </div>
+  <div class="selection-windows">
+    <div class="hat select-window">
+      <label class="control-label">帽子</label>
+        <div class="select-wrap">
+          <select id="hat-select">
+            <option id="none-hat_button">なし</option>
+            <option id="mugiwara_button">麦わら帽子</option>
+            <option id="cat-ear_button">ネコミミ</option>
+            <option id="angel-ring_button">天使の輪</option>
+            <option id="crown_button">王冠</option>
+            <option id="tyonmage_button">ちょんまげ</option>
+          </select>
       </div>
-
-      <div class="container pt20">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label class="control-label">背景</label>
-                <div class="select-wrap">
-                  <select id="background-select">
-                    <option id="none-background_button">なし</option>
-                    <option id="sunflower-field_button">ひまわり畑</option>
-                    <option id="japanese-style-house_button">和室</option>
-                    <option id="holo_button">後光</option>
-                    <option id="summon_button">召喚</option>
-                    <option id="castle_button">お城</option>
-                  </select>
-              </div>
-            </div>
-           </div>
+    </div>
+      <div class="body select-window">
+        <label class="control-label">体</label>
+          <div class="select-wrap">
+            <select id="body-select">
+              <option id="none-body_button">なし</option>
+              <option id="sunflower_button">ひまわり</option>
+              <option id="cat-body_button">ねこ</option>
+              <option id="angel_button">天使</option>
+              <option id="chimera_button">キメラ</option>
+              <option id="samurai_button">サムライ</option>
+            </select>
         </div>
-    
+      </div>
+      <div class="background select-window">
+        <label class="control-label">背景</label>
+          <div class="select-wrap">
+            <select id="background-select">
+              <option id="none-background_button">なし</option>
+              <option id="sunflower-field_button">ひまわり畑</option>
+              <option id="japanese-style-house_button">和室</option>
+              <option id="holo_button">後光</option>
+              <option id="summon_button">召喚</option>
+              <option id="castle_button">お城</option>
+            </select>
+        </div>
+      </div>
+    </div>
 
   
   <div class="buttons">
@@ -83,11 +67,11 @@
   </div>
   <div id="result-area"></div>
   <div class="howtoplay-area">
-    <h3>文字顔メーカーの使い方</h1><br>
-    <h3>・まず、入力欄に好きな文字を入れてください</h3>
-    <h3>・次に、「帽子」「体」「背景」を選択してください(「なし」のままでもok)</h3>
-    <h3>・あとは「実行」ボタンを押すだけ！かんたんでしょう？</h3>
-    <h3>・「ダウンロード」ボタンを押せばダウンロードもできますよ</h3>
+    <h4 class="howtoplay-title">文字顔メーカーの使い方</h4>
+    <h4 class="howtoplay-text">・まず、入力欄に好きな文字を入れてください</h4>
+    <h4 class="howtoplay-text">・次に、「帽子」「体」「背景」を選択してください(「なし」のままでもok)</h4>
+    <h4 class="howtoplay-text">・あとは「実行」ボタンを押すだけ！かんたんでしょう？</h4>
+    <h4 class="howtoplay-text">・「ダウンロード」ボタンを押せばダウンロードもできますよ</h4>
   </div>
   
   <script src="./mojigao-maker.js"></script>

@@ -21,28 +21,6 @@ body{
   margin: 0 20px;
   position: absolute;
 }
-.circle-one {
-  background-color:rgb(255, 117, 117);
-  width: 60px;
-  height: 60px;
-  display: inline-block;
-  border-radius: 50%;
-}
-.circle-two {
-  background-color:rgb(244, 255, 145);
-  width: 60px;
-  height: 60px;
-  display: inline-block;
-  border-radius: 50%;
-}
-.circle-big {
-  background-color:rgb(244, 255, 145);
-  width: 100px;
-  height: 100px;
-  display: inline-block;
-  border-radius: 50%;
-}
-
 
 
 
@@ -52,7 +30,6 @@ body{
   position: relative;
 	width: 30%;
 	margin: 1% 35%;
-  text-align: center;
 }
 .cp_iptxt input[type='text'] {
 	font: 15px/24px sans-serif;
@@ -67,7 +44,7 @@ body{
 .ef {
 	padding: 4px 0;
 	border: 0;
-	border-bottom: 1px solid #1b2538;
+	border-bottom: 2px solid #aaaaaa;
 	background-color: transparent;
 }
 .ef ~ .focus_line {
@@ -79,8 +56,7 @@ body{
 	transition: 0.4s;
 	background-color: #67a9ff;
 }
-.ef:focus ~ .focus_line,
-.cp_iptxt.ef ~ .focus_line {
+.ef:focus ~ .focus_line{
 	width: 100%;
 	transition: 0.4s;
 }
@@ -97,7 +73,7 @@ body{
 .ef:not(:placeholder-shown) + label{
   opacity: 0;
 }
-.ef:focus ~ label, .cp_iptxt.ef ~ label {
+.ef:focus ~ label{
   opacity: 1;
   font-size: 12px;
 	top: -16px;
@@ -133,7 +109,6 @@ body{
 }
 .btn-border_buttom:hover {
   color: #67a9ff;  
-  
 }
 .btn-border_buttom:hover:before{
   background:#67a9ff;
@@ -155,17 +130,12 @@ body{
 
 
 
-.pt20{
+.selection-window{
   padding-top: 20px;
 }
-.row{
+.select-window{
   width: 30%;
   margin: auto;
-}
-.inverse{
-  background: #000;
-  padding: 20px 0;
-  color: #fff;
 }
 .select-wrap {
     position: relative;
@@ -178,7 +148,7 @@ body{
     content: "\f123";
     font-family: "IonIcons";
     line-height: 43px;
-    color: #7F878C;
+    color: #aaaaaa;
     pointer-events: none;
 }
 select{
@@ -207,35 +177,18 @@ select option{
   background-color: #fff;
   color: #333;
 }
-select::-ms-expand {
-  display: none;
-}
-select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #828c9a;
-}
-.select-wrap.select-primary:before{
-  color:#fff;
-}
-.select-wrap.select-primary > select{
-  background:#0084B4;
-  color:#fff;
-  border-color:#0084B4;
-}
-.select-wrap.select-primary > select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #fff;
+select:{
+
 }
 
-.select-wrap.select-inverse:before{
-  color:#fff;
-}
-.select-wrap.select-inverse > select{
-  color:#fff;
-  border-color: #fff;
-}
 
-.select-wrap.select-inverse > select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #fff;
+
+.howtoplay-title{
+  color:#aaaaaa;
+}
+.howtoplay-area{
+  color:#aaaaaa;
+}
+.howtoplay-text{
+  margin:unset;
 }

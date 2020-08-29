@@ -29,6 +29,14 @@ var isdrow=false;
 //文字顔に使われている文字。ダウンロード用
 var mojigaotext = "";
 
+
+//キャンバスのサイズとりあえず手動
+const nomalcanvasSize = 300;
+const canvasRatio=canvas.width/nomalcanvasSize;
+const canvasSize=nomalcanvasSize*canvasRatio;
+
+
+
 //文字の場所。パターンがいくつかの中にそれぞれの文字の場所のx座標とy座標
 const mojipos =
   [
@@ -89,12 +97,67 @@ const mojisize =
       [600, 120]
     ]
   ];
+const mojitrans=[
+  {
+    pos:[
+      [-50, -150],
+      [70, -150],
+      [-140, 40]
+    ],
+    size:[
+      [800*canvasRatio, 600*canvasRatio],
+      [800*canvasRatio, 600*canvasRatio],
+      [1600*canvasRatio, 400*canvasRatio]]
+  },
+  {
+    pos:[
+      [-70, -220],
+      [70, -220],
+      [60, -60],
+      [-60, 130] 
+    ],
+    size:[
+      [750*canvasRatio,750*canvasRatio],
+      [750*canvasRatio, 750*canvasRatio],
+      [480*canvasRatio, 520*canvasRatio],
+      [1200*canvasRatio, 240*canvasRatio]]
+  },
+  {
+    pos:[
+      [-50, -20],
+      [50, -20],
+      [-20, -120],
+      [90, -120],
+      [-70, 20]
+    ],
+    size:[
+      [800*canvasRatio, 200*canvasRatio],
+      [800*canvasRatio, 200*canvasRatio],
+      [600*canvasRatio, 600*canvasRatio],
+      [600, 600*canvasRatio],
+      [1200*canvasRatio, 500*canvasRatio]]
+  },
+  {
+    pos:[
+      [-40, -20],
+      [100, -20],
+      [-20, -80],
+      [100, -80],
+      [60, -50],
+      [-60, 130]
+    ],
+    size:[
+      [640*canvasRatio, 220*canvasRatio],
+      [640*canvasRatio, 220*canvasRatio],
+      [600*canvasRatio, 448.20*canvasRatio],
+      [600*canvasRatio, 448.20*canvasRatio],
+      [480*canvasRatio, 520*canvasRatio],
+      [1200*canvasRatio, 240*canvasRatio]]
+  },
+]
 
 
 
-
-//キャンバスのサイズとりあえず手動
-const canvasSize = 300;
 
 //背景画像のサイズ:700*700
 const backgrountSize = 700;
@@ -114,7 +177,7 @@ const body_head_size = (headSize+10) / bodySize * canvasSize;
 /////背景と頭と帽子と。みたいな選択肢(？)絵の設定(？)ごとのパーツ(頭とか帽子とか)ごとのくり抜くやつ、サイズ、位置
 const koteitrans = {
   head: {
-    head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [canvasSize, canvasSize] }
+    head: { kurinuki: [headSize, headSize], pos: [0, 0], size: [canvasSize*2, canvasSize*2] }
   },
   head_hat: {
     head: { kurinuki: [headSize, headSize], pos: [37.5, 40], size: [head_hat_size, head_hat_size] },
@@ -267,11 +330,12 @@ function start(text){
 
   //画像の、0,0からどこまでくり抜いたものを描画するか。こんな感じの配列を宣言[[150,150],[150,150],[150,150]...]。
   //[150,150]の数は、文字顔の文字パーツの数+1(顔の後ろの白いやつ)。顔の後ろの白丸と、文字のくり抜くサイズは等しいため
-  let img_kurinuki = Array(mojipos[kaotype].length + 1).fill(Array(2).fill(150), Array(2).fill(150));
+  let img_kurinuki = Array(mojitrans[kaotype]["pos"].length+1).fill(Array(2).fill(canvasSize), Array(2).fill(canvasSize));
+  console.log(img_kurinuki,kaotype);
   //パーツごとの位置を設定。白丸の位置と、文字ごとの位置を、つないでる
-  let img_pos = images_pos = [koteitrans["head"]["head"].pos].concat(mojipos[kaotype]);
+  let img_pos = [koteitrans["head"]["head"].pos].concat(mojitrans[kaotype]["pos"]);
   //上のサイズ版。
-  let img_size = images_pos = [koteitrans["head"]["head"].size].concat(mojisize[kaotype]);
+  let img_size = [koteitrans["head"]["head"].size].concat(mojitrans[kaotype]["size"]);
   
   //画像をロードが終わるまでまで待ってから描画
   loadimages(images, img_kurinuki, img_pos, img_size);
@@ -338,6 +402,8 @@ function start(text){
       wait(function() {
         isdrow=false;
       })
+    }else{
+      isdrow=false;
     }
   });
 
@@ -348,13 +414,13 @@ function start(text){
 //どの文字顔を使うか関数
 function whichMojigao(text) {
   //文字顔の型(文字の位置)配列の長さ分の[0,1,2]みたいな連番の配列を作る
-  const mojitypes = [...Array(mojipos.length).keys()];
+  const mojitypes = [...Array(mojitrans.length).keys()];
   //(ずっと)繰り返す！
   while (true) {
     //連番配列の中から、ランダムで一つ取り出す。
     let kaotype = Math.floor(Math.random() * mojitypes.length);
     //ランダムに選んだ文字顔の型が文字数に合いそうなら
-    if (((mojipos[mojitypes[kaotype]].length) % (text.length)) === 0) {
+    if (mojitrans[mojitypes[kaotype]]["pos"].length % text.length === 0) {
       //連番配列の何番目かになってるんで、文字顔の型(文字の位置)の何番目かに変更
       kaotype = mojitypes[kaotype];
       return kaotype;
@@ -381,9 +447,10 @@ function setMojigao(text, kaotype) {
 
   /////短い文字が入力されたときも返せるように二重ループ
   //文字顔のの文字数回繰り返す。入力された文字回足してる。
-  for (let i = 0; i < mojipos[kaotype].length; i += text.length) {
+  for (let i = 0; i < mojitrans[kaotype]["pos"].length; i += text.length) {
     //入力された文字の長さ会繰り返す。
     for (let j = 0; j < text.length; j++) {
+      console.log("ふぁ");
       //画像配列に文字を追加
       teximages.push(MakeMojiImage(text[j]));
     }
@@ -503,3 +570,42 @@ Sunflower_fieldButton.onclick = () => {
 }
 
 **/
+
+
+
+/****
+ * select::-ms-expand {
+  display: none;
+}
+select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #828c9a;
+}
+.select-wrap.select-primary:before{
+  color:#fff;
+}
+.select-wrap.select-primary > select{
+  background:#0084B4;
+  color:#fff;
+  border-color:#0084B4;
+}
+.select-wrap.select-primary > select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #fff;
+}
+
+.select-wrap.select-inverse:before{
+  color:#fff;
+}
+.select-wrap.select-inverse > select{
+  color:#fff;
+  border-color: #fff;
+}
+
+.select-wrap.select-inverse > select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #fff;
+}
+
+
+ */

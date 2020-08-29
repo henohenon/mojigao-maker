@@ -301,6 +301,7 @@ function wait(callbackFunc) {
 
 //実行ボタンが押されたなら
 JikkouButton.onclick = () => {
+  console.log(canvasRatio,canvasSize);
   //テキストを入力欄から所得
   let text = TextInput.value;
   //入力欄が空白でないかつ描画中でないなら

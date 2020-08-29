@@ -1,112 +1,46 @@
+
 body{
   text-align: center;
   margin:0;
   padding:0;
 }
 
-.top-ber{
-  height: 120px;
-  width: 100%;
-  background-color: #67a9ff;  
-}
-
-.title-up{
-  vertical-align:100%;
-  margin: 0 20px;
-  position: absolute;
-}
-.title-down
-{
-  vertical-align:100%;
-  margin: 0 20px;
-  position: absolute;
-}
 
 
 
 
 
-.cp_iptxt {
-  position: relative;
-	width: 30%;
-	margin: 1% 35%;
-}
-.cp_iptxt input[type='text'] {
-	font: 15px/24px sans-serif;
-	box-sizing: border-box;
-	width: 100%;
-	letter-spacing: 1px;
-	padding-left: 0.5em;
-}
+
+
+
 .cp_iptxt input[type='text']:focus {
 	outline: none;
 }
-.ef {
-	padding: 4px 0;
-	border: 0;
-	border-bottom: 2px solid #aaaaaa;
-	background-color: transparent;
-}
-.ef ~ .focus_line {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 0;
-	height: 2px;
-	transition: 0.4s;
-	background-color: #67a9ff;
-}
+
+
 .ef:focus ~ .focus_line{
 	width: 100%;
 	transition: 0.4s;
 }
-.ef ~ label {
-	position: absolute;
-	z-index: -1;
-	top: 4px;
-	left: 0;
-	width: 100%;
-	transition: 0.3s;
-	letter-spacing: 0.5px;
-	color: #aaaaaa;
-}
+
 .ef:not(:placeholder-shown) + label{
   opacity: 0;
 }
-.ef:focus ~ label{
-  opacity: 1;
-  font-size: 12px;
-	top: -16px;
-	transition: 0.3s;
-	color: #67a9ff;
-}
 
 
-
-.btn-border_buttom {
-  border: none;  /* 枠線を消す */
-  outline: none; /* クリックしたときに表示される枠線を消す */
-  background: transparent; /* 背景の灰色を消す */
-  position: relative;
-  display: inline-block;
-  font-weight: bold;
-  padding: 0.25em 0;
-  text-decoration: none;
-  color: #aaaaaa;  
-  margin: 10px;
-}
 
 .btn-border_buttom:before {
   position: absolute;
   content: '';
   width: 100%;
   height: 4px;
-  top:100%;
+  top:80%;
   left: 0;
   border-radius: 3px;
   background:#aaaaaa;
   transition: .2s;
 }
+
 .btn-border_buttom:hover {
   color: #67a9ff;  
 }
@@ -114,12 +48,6 @@ body{
   background:#67a9ff;
 }
 
-
-
-.title-image{
-  width: 400px;
-  height: 120px;
-}
 
 
 
@@ -137,42 +65,8 @@ body{
   width: 30%;
   margin: auto;
 }
-.select-wrap {
-    position: relative;
-}
-.select-wrap:before {
-    z-index: 1;
-    position: absolute;
-    right: 15px;
-    top: 0;
-    content: "\f123";
-    font-family: "IonIcons";
-    line-height: 43px;
-    color: #aaaaaa;
-    pointer-events: none;
-}
-select{
-    outline:none;
-    -moz-appearance: none;
-    text-indent: 0.01px;
-    text-overflow: '';
-    background: none transparent;
-    vertical-align: middle;
-    font-size: inherit;
-    color: inherit;
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    height: 40px;
-    padding: 8px 12px;
-    border:1px solid #ddd;
-    color:#828c9a;
-    width:100%;
-    border-radius:3px;
-}
+
+
 select option{
   background-color: #fff;
   color: #333;
@@ -195,7 +89,7 @@ select:{
 
 .making-text{
   position: absolute;
-  top: 250px;
+  top: 270px;
   left: 50%;
   -ms-transform: translate(-50%,-50%);
   -webkit-transform: translate(-50%,-50%);
@@ -209,7 +103,7 @@ select:{
 }
 .making-image{
   position: absolute;
-  top: 250px;
+  top: 270px;
   left: 50%;
   -ms-transform: translate(-50%,-50%);
   -webkit-transform: translate(-50%,-50%);
@@ -235,4 +129,113 @@ select:{
   top: 60px;
   left: 80%;
  
+}
+
+
+  .top-ber{
+    height: 120px;
+    width: 100%;
+    background-color: #67a9ff;  
+  }
+  .title-image{
+    width: 400px;
+    height: 120px;
+  }
+  .cp_iptxt {
+    position: relative;
+    width: 30%;
+    margin: 1% 35%;
+  }
+  /*入力欄の下のライン*/
+  .ef {
+    padding: 4px 0;
+    border: 0;
+    border-bottom: 2px solid #aaaaaa;
+    background-color: transparent;
+  }
+  .ef ~ .focus_line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    transition: 0.4s;
+    background-color: #67a9ff;
+  }
+  .ef ~ label {
+    position: absolute;
+    z-index: -1;
+    font-size: 15px;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    color: #aaaaaa;
+  }
+  .ef:focus ~ label{
+    opacity: 1;
+    font-size: 12px;
+    top: -16px;
+    transition: 0.3s;
+    color: #67a9ff;
+  }
+  .cp_iptxt input[type='text'] {
+    box-sizing: border-box;
+    width: 100%;
+    letter-spacing: 1px;
+    font-size: 30px;
+    padding-top: 0pc;
+    padding-bottom: 0px;
+    text-align: center;
+  }
+  .btn-border_buttom {
+    border: none;  /* 枠線を消す */
+    outline: none; /* クリックしたときに表示される枠線を消す */
+    background: transparent; /* 背景の灰色を消す */
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0.25em 0;
+    text-decoration: none;
+    color: #aaaaaa;  
+    margin: 10px;
+    font-size: 20px;
+  }
+  .select-wrap {
+    position: relative;
+    font-size: 20px;
+}
+select{
+  outline:none;
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+  background: none transparent;
+  vertical-align: middle;
+  font-size: inherit;
+  color: inherit;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 45px;
+  padding: 8px 12px;
+  border:1px solid #ddd;
+  color:#828c9a;
+  width:100%;
+  border-radius:3px;
+}
+.select-wrap:before {
+  z-index: 1;
+  position: absolute;
+  right: 15px;
+  top: 0;
+  content: "\f123";
+  font-family: "IonIcons";
+  line-height: 43px;
+  color: #aaaaaa;
+  pointer-events: none;
 }

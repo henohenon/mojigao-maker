@@ -102,6 +102,21 @@ const mojitrans=[
   },
   {
     pos:[
+      [-20, -80],
+      [100, -80],
+      [95, 60],
+      [125, 60],
+      [-60, 130]
+    ],
+    size:[
+      [600*canvasRatio, 448.20*canvasRatio],
+      [600*canvasRatio, 448.20*canvasRatio],
+      [240*canvasRatio, 260*canvasRatio],
+      [240*canvasRatio, 260*canvasRatio],
+      [1200*canvasRatio, 240*canvasRatio]]
+  },
+  {
+    pos:[
       [-40, -20],
       [100, -20],
       [-20, -80],
@@ -117,6 +132,26 @@ const mojitrans=[
       [480*canvasRatio, 520*canvasRatio],
       [1200*canvasRatio, 240*canvasRatio]]
   },
+  {
+    pos:[
+      [-40, -20],
+      [100, -20],
+      [-20, -80],
+      [100, -80],
+      [95, 60],
+      [125, 60],
+      [-60, 130]
+    ],
+    size:[
+      [640*canvasRatio, 220*canvasRatio],
+      [640*canvasRatio, 220*canvasRatio],
+      [600*canvasRatio, 448.20*canvasRatio],
+      [600*canvasRatio, 448.20*canvasRatio],
+      [240*canvasRatio, 260*canvasRatio],
+      [240*canvasRatio, 260*canvasRatio],
+      [1200*canvasRatio, 240*canvasRatio]]
+  },
+ 
 ]
 //背景と頭と帽子と。みたいな選択肢(？)絵の設定(？)ごとのパーツ(頭とか帽子とか)ごとのくり抜くやつ、サイズ、位置
 const koteitrans = {
@@ -210,7 +245,8 @@ const random_strings=[
   "こびとのむら",
   "カカポ",
   "つよくいきて",
-  "6億円"
+  "6億円",
+
 ]
 
 
@@ -296,6 +332,11 @@ function start_making(text){
 
   //文字顔の型を指定
   kaotype = whichMojigao(text);
+  //ないはずなんだけど、一応例外処理。
+  if(kaotype===undefined){
+    console.log("文字数に合う文字顔の型がありません。");
+    return;
+  }
   //一文字ごとの画像を入れる
   images = setMojigao(text, kaotype);
 
@@ -321,7 +362,7 @@ function start_making(text){
 
 
 
-  //画像の描画が終わるまで待つ
+  //文字顔の描画が終わるまで待つ
   wait(function () {
     //背景など使用しているサブパーツの種類を入れる配列。「ひまわり」とかじゃなくて、「body」とかが入る
     let others_array = new Array();
@@ -363,13 +404,12 @@ function start_making(text){
       img_pos = [];
       img_size = [];
       
-      //
+      //foreachでサブパーツそれぞれを、画像配列とかに追加
       others_array.forEach(other => {
         //頭なら、予め格納しておいたものを。それ以外なら、画像配列から。描画する画像配列に格納。
         if (other === "head") {
           images.push(URLtoImage(mojigaoURL));
         } else {
-          //images.push(URLtoImage(image_URLs[other][image_Num[other]]));
           images.push(URLtoImage(image_names[other][image_Num[other]-1].URL));
         }
         //くり抜く場所を、サブパーツの種類ごとに配列からもらい、描画する画像のくり抜き位置配列に格納
@@ -410,7 +450,6 @@ function start_making(text){
 function whichMojigao(text) {
   //文字顔の型(文字の位置)配列の長さ分の[0,1,2]みたいな連番の配列を作る
   const mojitypes = [...Array(mojitrans.length).keys()];
-  //(ずっと)繰り返す！
   while (true) {
     //連番配列の中から、ランダムで一つ取り出す。
     let kaotype = Math.floor(Math.random() * mojitypes.length);
@@ -426,13 +465,12 @@ function whichMojigao(text) {
     }
     //(ないはずだけど)番号配列の長さが0(以下)になったら(無限ループ対策)
     if (mojitypes.length <= 0) {
-      console.log("文字数に合う文字顔の型がありません。");//ないよーっていう
       return undefined;
     }
   }
 }
 
-//入力された文字を、画像にして返す関数
+//文字顔の型のパーツを、image配列にして渡してる。
 function setMojigao(text, kaotype) {
   //画像の配列
   let teximages = new Array();
@@ -441,11 +479,10 @@ function setMojigao(text, kaotype) {
   ClearCanvas();
 
   /////短い文字が入力されたときも返せるように二重ループ
-  //文字顔のの文字数回繰り返す。入力された文字回足してる。
+  //文字顔のの文字数回繰り返す。一回に付き、入力された文字分を足してる。
   for (let i = 0; i < mojitrans[kaotype]["pos"].length; i += text.length) {
-    //入力された文字の長さ会繰り返す。
+    //入力された文字の長さ回繰り返す。
     for (let j = 0; j < text.length; j++) {
-      console.log("ふぁ");
       //画像配列に文字を追加
       teximages.push(MakeMojiImage(text[j]));
     }
@@ -463,7 +500,7 @@ function MakeMojiImage(moji) {
   return image;
 }
 
-//文字をcanvasに書く変数。(一文字ずつでしか使用していない。複数の文字でもいけるはず)
+//文字をcanvasに書く変数。
 function DrowText(text) {
   //キャンバスの何かを所得(わかってない)
   const ctx = canvas.getContext("2d");
@@ -478,7 +515,7 @@ function URLtoImage(url) {
   var image = new Image();
   //これがないとキャンバスが汚染されてダウンロードとかできなくなる(意味はわかってない)
   image.crossOrigin = "anonymous";
-  //キャンバスをURLにしてimageに代入
+  //URLをimageに代入
   image.src = url;
   return image;
 }
@@ -505,8 +542,7 @@ function loadimages(teximages, img_kurinuki, img_pos, img_size) {
 
 // 各画像を順番に描画するよ関数
 function DrowResults(images, img_kurinuki, img_pos, img_size) {
-  //キャンパスのなにかを所得してる
-  
+  //キャンパスのなにかを所得
   let context = canvas.getContext('2d');
   //文字とかの画像回繰り返す
   for (var i = 0; i < images.length; i++) {
@@ -515,92 +551,11 @@ function DrowResults(images, img_kurinuki, img_pos, img_size) {
   }
   //今のキャンバスのURLを格納
   nowCanvasURL = canvas.toDataURL();
+  //読み込みが終わったことを知らせる。wait関数用
   isload = false;
 }
 //キャンバスをまっさらにする関数
 function ClearCanvas() {
-  //キャンバスの何かを所得
   let context = canvas.getContext('2d');
-  //0,0からデカさ分クリア
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
-
-
-
-
-
-/////帽子系のボタンを所得
-const noneButton = document.getElementById("none-hat_button");
-const mugiwaraButton = document.getElementById("mugiwara_button");
-
-/////帽子系のボタンの押されたら処理
-noneButton.onclick = () => {
-  //image_Num["hat"] = "none";
-}
-mugiwaraButton.onclick = () => {
-  //image_Num["hat"] = "Straw_hat";
-}
-
-
-
-/**
-
-/////体系のボタンを所得
-const himawariButton = document.getElementById("himawari_button");
-
-/////体系のボタンの押されたら処理
-himawariButton.onclick = () => {
-  //image_Num["body"] = "Sunflower";
-}
-
-
-
-/////背景系のボタンを所得
-const Sunflower_fieldButton = document.getElementById("Sunflower_field_button");
-
-/////背景系のボタン
-Sunflower_fieldButton.onclick = () => {
-  //image_Num["background"] = "Sunflower_field";
-
-}
-
-**/
-
-
-
-/****
- * select::-ms-expand {
-  display: none;
-}
-select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #828c9a;
-}
-.select-wrap.select-primary:before{
-  color:#fff;
-}
-.select-wrap.select-primary > select{
-  background:#0084B4;
-  color:#fff;
-  border-color:#0084B4;
-}
-.select-wrap.select-primary > select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #fff;
-}
-
-.select-wrap.select-inverse:before{
-  color:#fff;
-}
-.select-wrap.select-inverse > select{
-  color:#fff;
-  border-color: #fff;
-}
-
-.select-wrap.select-inverse > select:-moz-focusring { 
-  color: transparent; 
-  text-shadow: 0 0 0 #fff;
-}
-
-
- */

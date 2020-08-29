@@ -1,7 +1,8 @@
 /////所得系
 //メッセージを伝えたりするところを所得
 const resultDivided = document.getElementById('result-area');
-const makingText=document.getElementById("making-text")
+const makingText=document.getElementById("making-text");
+const makingImage=document.getElementById("making-image");
 //入力欄を所得
 const TextInput = document.getElementById("input-text");
 //キャンバスを所得
@@ -274,7 +275,8 @@ function start_making(text){
   //描画する画像の配列
   let images = new Array();
 
-  makingText.style.opacity=0.7;
+  makingImage.style.opacity=0.7;
+  makingText.style.opacity=1;
 
   //文字顔の型を指定
   kaotype = whichMojigao(text);
@@ -373,11 +375,12 @@ function start_making(text){
       wait(function() {
         isdrow=false;
         makingText.style.opacity=0;
+        makingImage.style.opacity=0;
       })
     }else{
       isdrow=false;
       makingText.style.opacity=0;
-
+      makingImage.style.opacity=0;
     }
   });
 

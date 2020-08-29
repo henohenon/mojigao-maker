@@ -195,7 +195,7 @@ select:{
 
 .making-text{
   position: absolute;
-  top: 50%;
+  top: 250px;
   left: 50%;
   -ms-transform: translate(-50%,-50%);
   -webkit-transform: translate(-50%,-50%);
@@ -206,4 +206,15 @@ select:{
 }
 .making-area{
   position: relative;
+}
+.making-image{
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  -ms-transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin:0;
+  padding:0;
+  opacity: 0%;
 }

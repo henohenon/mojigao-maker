@@ -1,6 +1,7 @@
 /////所得系
 //メッセージを伝えたりするところを所得
 const resultDivided = document.getElementById('result-area');
+//「nowmaking...」の要素を所得
 const makingText=document.getElementById("making-text");
 const makingImage=document.getElementById("making-image");
 //入力欄を所得
@@ -8,11 +9,11 @@ const TextInput = document.getElementById("input-text");
 //キャンバスを所得
 const canvas = document.getElementById('board');
 
-//実行ボタンと、ダウンロードボタンを所得
+//実行ボタンと、ランダムボタン、ダウンロードボタンを所得を所得
 const JikkouButton = document.getElementById('jikkou_button');
 const RandomButton = document.getElementById('randomu_button');
 const DownloadButton = document.getElementById("download_button");
-
+//選択窓を所得
 const hatSelect=document.getElementById("hat-select");
 const bodySelect=document.getElementById("body-select");
 const backgroundSelect=document.getElementById("background-select");
@@ -27,6 +28,7 @@ var mojigaoURL = "";
 //スリープ関数用の、今画像ロード、描画してるか。
 var isload = false;
 
+//いま処理が実行中か。連打された時対策
 var isdrow=false;
 
 //文字顔に使われている文字。ダウンロード用
@@ -57,7 +59,7 @@ const head_hat_size = (headSize) / hatSize * canvasSize;
 const body_head_size = (headSize+10) / bodySize * canvasSize;
 
 
-//文字顔の型の配列。くり抜くやつはキャンバスサイズから固定
+//文字顔の型の配列。くり抜くやつはキャンバスサイズから固定。
 const mojitrans=[
   {
     pos:[
@@ -192,6 +194,8 @@ const image_names={
 const download_name={
 }
 
+
+//ランダムボタンを押したときに入力欄に出てくる候補達
 const random_strings=[
   "へのへぇのぉ",
   "へのへのもへ",
@@ -209,6 +213,8 @@ const random_strings=[
   "6億円"
 ]
 
+
+//ランダムボタンが押されたときの処理
 RandomButton.onclick=()=>{
   TextInput.value=random_strings[Math.floor(Math.random()*random_strings.length)];
   hatSelect.selectedIndex= Math.floor(Math.random()*(image_names["hat"].length+1));
@@ -220,15 +226,21 @@ RandomButton.onclick=()=>{
 //ダウンロードボタンがおされたら、ダウンロードする関数
 DownloadButton.onclick = () => {
   //文字顔が空白でないならダウンロードできるようにする
-  if(mojigaotext!==""&&isdrow===false){
+  if(isdrow===false){
+    if(nowCanvasURL!==""){
     //aタグを作成
     let link = document.createElement('a');
     //aタグのherf属性にキャンバスをURL化したものを入れる。
-    link.href = canvas.toDataURL();
+    link.href = nowCanvasURL;
     //ダウンロード時の名前を、入力されたテキスト.pngに設定
     link.download = mojigaotext + '.png';
     //リンクを強制的にクリックさせて、ダウンロード
     link.click();
+    }else{
+      console.log("まだ文字顔が生成されていないため、ダウンロードできません")
+    }
+  }else{
+    console.log("画像の描画が終わるまでお待ち下さい")
   }
 }
 
@@ -256,11 +268,15 @@ JikkouButton.onclick = () => {
   //テキストを入力欄から所得
   let text = TextInput.value;
   //入力欄が空白でないかつ描画中でないなら
-  if (text!==""&&isdrow===false) {
-    //文字顔の作成を開始
-    start_making(text);
-  }else{
-    console.log("画像の描画が終わるまでお待ち下さい。");
+  if (isdrow===false) {
+    if(text!==""){
+      //文字顔の作成を開始
+      start_making(text);
+    }else{
+      console.log("文字を入力してください")
+    }
+    }else{
+      console.log("画像の描画が終わるまでお待ち下さい");
   }
 }
 
@@ -373,18 +389,20 @@ function start_making(text){
       //画像のロードが終わるまで待ってから描画。
       loadimages(images, img_kurinuki, img_pos, img_size);
       wait(function() {
+        //now making...を消す
         isdrow=false;
         makingText.style.opacity=0;
         makingImage.style.opacity=0;
       })
     }else{
+      //now making...を消す
       isdrow=false;
       makingText.style.opacity=0;
       makingImage.style.opacity=0;
     }
   });
-
-  mojigaotext = text;//ダウンロードの名前用の変数に、今の文字顔の文字を代入
+  //ダウンロードの名前用の変数に、今の文字顔の文字を代入
+  mojigaotext = text;
 }
 
 
@@ -409,7 +427,7 @@ function whichMojigao(text) {
     //(ないはずだけど)番号配列の長さが0(以下)になったら(無限ループ対策)
     if (mojitypes.length <= 0) {
       console.log("文字数に合う文字顔の型がありません。");//ないよーっていう
-      return;
+      return undefined;
     }
   }
 }

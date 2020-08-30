@@ -328,7 +328,6 @@ function wait(callbackFunc) {
 
 //実行ボタンが押されたなら
 JikkouButton.onclick = () => {
-  console.log(canvasRatio,canvasSize);
   //テキストを入力欄から所得
   let text = TextInput.value;
   //入力欄が空白でないかつ描画中でないなら
@@ -589,24 +588,25 @@ function ClearCanvas() {
 }
 
 
-
+//警告文を言う関数
 function console_output(text){
+  crea_output();
+  
+  //html要素を作成
   const header = document.createElement('h3');
   header.innerText = text;
-  // 診断結果表示エリアの作成
-  
   header.style.color="red";
-  crea_output();
+  
   Output_Divided.appendChild(header);
   console.log(text);
-  setTimeout(
-  "crea_output();"
-    ,1000)
+  //1秒後に消す
+  setTimeout("crea_output();",1000);
 }
 
+//警告文とか全部消す関数
 function crea_output(){
+  // 子どもの要素があるかぎり削除
   while (Output_Divided.firstChild) {
-    // 子どもの要素があるかぎり削除
     Output_Divided.removeChild(Output_Divided.firstChild);
   }
 }

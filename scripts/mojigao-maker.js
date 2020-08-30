@@ -1,6 +1,6 @@
 /////所得系
 //メッセージを伝えたりするところを所得
-const resultDivided = document.getElementById('result-area');
+const Output_Divided = document.getElementById('output-area');
 //「nowmaking...」の要素を所得
 const makingText=document.getElementById("making-text");
 const makingImage=document.getElementById("making-image");
@@ -254,7 +254,7 @@ const random_strings=[
   "ぬこ",
   "俺がへのへのだ",
   "新品",
-  "コロナ収束！",
+  "コロナ終息！",
   "くじら",
   "フラミンゴ",
   "カモノハシ",
@@ -275,10 +275,14 @@ const random_strings=[
 
 //ランダムボタンが押されたときの処理
 RandomButton.onclick=()=>{
-  TextInput.value=random_strings[Math.floor(Math.random()*random_strings.length)];
-  hatSelect.selectedIndex= Math.floor(Math.random()*(image_names["hat"].length+1));
-  bodySelect.selectedIndex= Math.floor(Math.random()*(image_names["body"].length+1));
-  backgroundSelect.selectedIndex= Math.floor(Math.random()*(image_names["background"].length+1));
+  if(isdrow===false){
+    TextInput.value=random_strings[Math.floor(Math.random()*random_strings.length)];
+    hatSelect.selectedIndex= Math.floor(Math.random()*(image_names["hat"].length+1));
+    bodySelect.selectedIndex= Math.floor(Math.random()*(image_names["body"].length+1));
+    backgroundSelect.selectedIndex= Math.floor(Math.random()*(image_names["background"].length+1));
+  }else{
+    console_output("画像の描画が終わるまでお待ち下さい");
+  }
 }
 
 
@@ -296,10 +300,10 @@ DownloadButton.onclick = () => {
     //リンクを強制的にクリックさせて、ダウンロード
     link.click();
     }else{
-      console.log("まだ文字顔が生成されていないため、ダウンロードできません")
+      console_output("まだ文字顔が生成されていないため、ダウンロードできません");
     }
   }else{
-    console.log("画像の描画が終わるまでお待ち下さい")
+    console_output("画像の描画が終わるまでお待ち下さい")
   }
 }
 
@@ -333,10 +337,10 @@ JikkouButton.onclick = () => {
       //文字顔の作成を開始
       start_making(text);
     }else{
-      console.log("文字を入力してください")
+      console_output("文字を入力してください")
     }
     }else{
-      console.log("画像の描画が終わるまでお待ち下さい");
+      console_output("画像の描画が終わるまでお待ち下さい");
   }
 }
 
@@ -358,7 +362,7 @@ function start_making(text){
   kaotype = whichMojigao(text);
   //ないはずなんだけど、一応例外処理。
   if(kaotype===undefined){
-    console.log("文字数に合う文字顔の型がありません。");
+    console_output("文字数に合う文字顔の型がありません。");
     return;
   }
   //一文字ごとの画像を入れる
@@ -582,4 +586,27 @@ function DrowResults(images, img_kurinuki, img_pos, img_size) {
 function ClearCanvas() {
   let context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+
+function console_output(text){
+  const header = document.createElement('h3');
+  header.innerText = text;
+  // 診断結果表示エリアの作成
+  
+  header.style.color="red";
+  crea_output();
+  Output_Divided.appendChild(header);
+  console.log(text);
+  setTimeout(
+  "crea_output();"
+    ,1000)
+}
+
+function crea_output(){
+  while (Output_Divided.firstChild) {
+    // 子どもの要素があるかぎり削除
+    Output_Divided.removeChild(Output_Divided.firstChild);
+  }
 }

@@ -239,3 +239,7 @@ select{
   color: #aaaaaa;
   pointer-events: none;
 }
+.subparts-label{
+  color: #858585;
+  font-size: 20px;
+}

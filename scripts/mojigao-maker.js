@@ -273,7 +273,6 @@ const random_strings=[
   "タイガー岩崎"
 ]
 
-
 //ランダムボタンが押されたときの処理
 RandomButton.onclick=()=>{
   TextInput.value=random_strings[Math.floor(Math.random()*random_strings.length)];

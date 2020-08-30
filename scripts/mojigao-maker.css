@@ -5,115 +5,22 @@ body{
   padding:0;
 }
 
-
-
-
-
-
-
-
-
-.cp_iptxt input[type='text']:focus {
-	outline: none;
-}
-
-
-.ef:focus ~ .focus_line{
-	width: 100%;
-	transition: 0.4s;
-}
-
-.ef:not(:placeholder-shown) + label{
-  opacity: 0;
-}
-
-
-
-.btn-border_buttom:before {
-  position: absolute;
-  content: '';
+/***上のバーとかのcss***/
+.top-ber{
+  height: 120px;
   width: 100%;
-  height: 4px;
-  top:80%;
-  left: 0;
-  border-radius: 3px;
-  background:#aaaaaa;
-  transition: .2s;
+  background-color: #67a9ff;  
 }
-
-.btn-border_buttom:hover {
-  color: #67a9ff;  
+.title-image{
+  width: 400px;
+  height: 120px;
 }
-.btn-border_buttom:hover:before{
-  background:#67a9ff;
-}
-
-
-
-
-
-
-
-
-
-
-
-.selection-window{
-  padding-top: 20px;
-}
-.select-window{
-  width: 30%;
-  margin: auto;
-}
-
-
-select option{
-  background-color: #fff;
-  color: #333;
-}
-select:{
-
-}
-
-
-
-.howtoplay-title{
-  color:#aaaaaa;
-}
-.howtoplay-area{
-  color:#aaaaaa;
-}
-.howtoplay-text{
-  margin:unset;
-}
-
-.making-text{
-  position: absolute;
-  top: 270px;
-  left: 50%;
-  -ms-transform: translate(-50%,-50%);
-  -webkit-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  margin:0;
-  padding:0;
-  opacity: 0%;
-}
-.making-area{
+.cp_iptxt {
   position: relative;
+  width: 30%;
+  margin: 1% 35%;
 }
-.making-image{
-  position: absolute;
-  top: 272px;
-  left: 50%;
-  -ms-transform: translate(-50%,-50%);
-  -webkit-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  margin:0;
-  padding:0;
-  opacity: 0%;
-}
-
-
+/***利用規約のcss***/
 .kiyaku-link{
   position: absolute;
   text-decoration: none;
@@ -132,79 +39,102 @@ select:{
 }
 
 
-  .top-ber{
-    height: 120px;
-    width: 100%;
-    background-color: #67a9ff;  
-  }
-  .title-image{
-    width: 400px;
-    height: 120px;
-  }
-  .cp_iptxt {
-    position: relative;
-    width: 30%;
-    margin: 1% 35%;
-  }
-  /*入力欄の下のライン*/
-  .ef {
-    padding: 4px 0;
-    border: 0;
-    border-bottom: 2px solid #aaaaaa;
-    background-color: transparent;
-  }
-  .ef ~ .focus_line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    transition: 0.4s;
-    background-color: #67a9ff;
-  }
-  .ef ~ label {
-    position: absolute;
-    z-index: -1;
-    font-size: 15px;
-    top: 4px;
-    left: 0;
-    width: 100%;
-    transition: 0.3s;
-    letter-spacing: 1px;
-    color: #aaaaaa;
-  }
-  .ef:focus ~ label{
-    opacity: 1;
-    font-size: 12px;
-    top: -16px;
-    transition: 0.3s;
-    color: #67a9ff;
-  }
-  .cp_iptxt input[type='text'] {
-    box-sizing: border-box;
-    width: 100%;
-    letter-spacing: 1px;
-    font-size: 30px;
-    padding-top: 0pc;
-    padding-bottom: 0px;
-    text-align: center;
-  }
-  .btn-border_buttom {
-    border: none;  /* 枠線を消す */
-    outline: none; /* クリックしたときに表示される枠線を消す */
-    background: transparent; /* 背景の灰色を消す */
-    position: relative;
-    display: inline-block;
-    font-weight: bold;
-    padding: 0.25em 0;
-    text-decoration: none;
-    color: #aaaaaa;  
-    margin: 10px;
-    font-size: 20px;
-  }
-  .select-wrap {
-    position: relative;
-    font-size: 20px;
+/***入力欄の大本css***/
+.cp_iptxt input[type='text'] {
+  box-sizing: border-box;
+  width: 100%;
+  letter-spacing: 1px;
+  font-size: 30px;
+  padding-top: 0pc;
+  padding-bottom: 0px;
+  text-align: center;
+}
+.cp_iptxt input[type='text']:focus {
+	outline: none;
+}
+/***入力欄(inputタグ)のcss***/
+.ef {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 2px solid #aaaaaa;
+  background-color: transparent;
+}
+.ef ~ .focus_line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: 0.4s;
+  background-color: #67a9ff;
+}
+.ef ~ label {
+  position: absolute;
+  z-index: -1;
+  font-size: 15px;
+  top: 4px;
+  left: 0;
+  width: 100%;
+  transition: 0.3s;
+  letter-spacing: 1px;
+  color: #aaaaaa;
+}
+.ef:focus ~ label{
+  opacity: 1;
+  font-size: 12px;
+  top: -16px;
+  transition: 0.3s;
+  color: #67a9ff;
+}
+.ef:focus ~ .focus_line{
+	width: 100%;
+	transition: 0.4s;
+}
+.ef:not(:placeholder-shown) + label{
+  opacity: 0;
+}
+
+
+/***ボタンのcss***/
+.btn-border_buttom {
+  border: none;  
+  outline: none; 
+  background: transparent;
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.25em 0;
+  text-decoration: none;
+  color: #aaaaaa;  
+  margin: 10px;
+  font-size: 20px;
+}
+.btn-border_buttom:before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 4px;
+  top:80%;
+  left: 0;
+  border-radius: 3px;
+  background:#aaaaaa;
+  transition: .2s;
+}
+.btn-border_buttom:hover {
+  color: #67a9ff;  
+}
+.btn-border_buttom:hover:before{
+  background:#67a9ff;
+}
+
+
+/***選択窓のcss***/
+.selection-window{
+  padding-top: 20px;
+}
+.select-window{
+  width: 30%;
+  margin: auto;
 }
 select{
   outline:none;
@@ -227,19 +157,66 @@ select{
   color:#828c9a;
   width:100%;
   border-radius:3px;
+  }
+.select-wrap {
+  position: relative;
+  font-size: 20px;
 }
 .select-wrap:before {
-  z-index: 1;
-  position: absolute;
-  right: 15px;
-  top: 0;
-  content: "\f123";
-  font-family: "IonIcons";
-  line-height: 43px;
-  color: #aaaaaa;
-  pointer-events: none;
+z-index: 1;
+position: absolute;
+right: 15px;
+top: 0;
+content: "\f123";
+font-family: "IonIcons";
+line-height: 43px;
+color: #aaaaaa;
+pointer-events: none;
+}
+select option{
+  background-color: #fff;
+  color: #333;
 }
 .subparts-label{
   color: #858585;
   font-size: 20px;
+}
+
+
+/***「使い方」のcss***/
+.howtoplay-title{
+  color:#aaaaaa;
+}
+.howtoplay-area{
+  color:#aaaaaa;
+}
+.howtoplay-text{
+  margin:unset;
+}
+
+/***「now making...」のcss***/
+.making-text{
+  position: absolute;
+  top: 270px;
+  left: 50%;
+  -ms-transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin:0;
+  padding:0;
+  opacity: 0%;
+}
+.making-area{
+  position: relative;
+}
+.making-image{
+  position: absolute;
+  top: 270px;
+  left: 50%;
+  -ms-transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin:0;
+  padding:0;
+  opacity: 0%;
 }

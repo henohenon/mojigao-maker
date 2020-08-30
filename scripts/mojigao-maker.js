@@ -292,11 +292,11 @@ DownloadButton.onclick = () => {
   if(isdrow===false){
     if(nowCanvasURL!==""){
     //aタグを作成
-    let link = document.createElement('a');
+    let link = document.createElement("a");
     //aタグのherf属性にキャンバスをURL化したものを入れる。
     link.href = nowCanvasURL;
     //ダウンロード時の名前を、入力されたテキスト.pngに設定
-    link.download = mojigaotext + '.png';
+    link.download = "文字顔_"+mojigaotext + ".png";
     //リンクを強制的にクリックさせて、ダウンロード
     link.click();
     }else{

@@ -273,6 +273,7 @@ const random_strings=[
   "タイガー岩崎"
 ]
 
+
 //ランダムボタンが押されたときの処理
 RandomButton.onclick=()=>{
   if(isdrow===false){
